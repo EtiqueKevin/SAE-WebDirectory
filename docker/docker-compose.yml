@@ -1,0 +1,64 @@
+version: "3"
+
+networks:
+  webdirectory.net:
+    driver: bridge
+
+services:
+  webdirectory.core.admin:
+    image: canals/php:latest
+    ports:
+      - "43001:80"
+    volumes :
+      - ./WebDirectory.core/WebDirectory.appli/public:/var/www/html
+      - ./WebDirectory.core/WebDirectory.appli/src:/var/www/src
+      - ./WebDirectory.core/WebDirectory.appli/tests:/var/www/tests
+    working_dir: /var/www/src
+    networks:
+      - webdirectory.net
+    depends_on:
+      - webdirectory.db
+
+  webdirectory.core.api:
+    image: canals/php:latest
+    ports:
+      - "43000:80"
+    volumes :
+      - ./WebDirectory.core/WebDirectory.api/public:/var/www/html
+      - ./WebDirectory.core/WebDirectory.api/src:/var/www/src
+    working_dir: /var/www/src
+    networks:
+      - webdirectory.net
+    depends_on:
+      - webdirectory.db
+      
+  webdirectory.web:
+    image: ubuntu/apache2:latest
+    ports:
+      - "43002:80"
+    volumes:
+      - ./WebDirectory.web:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - webdirectory.net
+    depends_on:
+      - webdirectory.db
+      
+  webdirectory.db:
+    image: mariadb:latest
+    volumes:
+        - ./sql:/docker-entrypoint-initdb.d
+    env_file:
+      - ./sql/.database_env
+    ports:
+      - "43005:3306"
+    networks:
+      webdirectory.net:
+        aliases:
+          - webdirectory.db
+          
+  
+    
+    
+    
+
