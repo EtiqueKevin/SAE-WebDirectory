@@ -18,6 +18,7 @@ services:
       - webdirectory.net
     depends_on:
       - webdirectory.db
+    restart: on-failure:5
 
   webdirectory.core.api:
     image: canals/php:latest
@@ -31,6 +32,7 @@ services:
       - webdirectory.net
     depends_on:
       - webdirectory.db
+    restart: on-failure:5
       
   webdirectory.web:
     image: ubuntu/apache2:latest
@@ -43,6 +45,7 @@ services:
       - webdirectory.net
     depends_on:
       - webdirectory.db
+    restart: on-failure:5
       
   webdirectory.db:
     image: mariadb:latest
@@ -56,6 +59,7 @@ services:
       webdirectory.net:
         aliases:
           - webdirectory.db
+    restart: on-failure:5
           
   
     
