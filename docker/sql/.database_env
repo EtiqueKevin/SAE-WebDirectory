@@ -1,0 +1,4 @@
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=webdirectory_db
+MYSQL_USER=webdirectory_user
+MYSQL_PASSWORD=webdirectory_password
