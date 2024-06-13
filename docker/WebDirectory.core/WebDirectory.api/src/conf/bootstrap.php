@@ -1,5 +1,8 @@
 <?php
 
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Response;
 use webdirectory\api\infrastructure\Eloquent;
 use Slim\Factory\AppFactory;
 
@@ -21,5 +24,21 @@ $app->add(function ($request, $handler) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
+
+$errorMiddleware = $app->addErrorMiddleware(true, false, false);
+
+$errorMiddleware->setErrorHandler(
+    HttpNotFoundException::class,
+    function (ServerRequestInterface $request) {
+        $response = new Response();
+        $response->getBody()->write(json_encode([
+            'type' => 'error',
+            'code' => '404',
+            'message' => 'Ressource non trouvée',
+            'description' => 'La ressource demandée n\'existe pas ou plus'
+        ]));
+        return $response->withStatus(404);
+    }
+);
 
 return $app;
