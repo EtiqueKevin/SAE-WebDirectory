@@ -9,7 +9,7 @@ class Departement extends \Illuminate\Database\Eloquent\Model{
     public $timestamps=false;
 
     public function entrees2departement(){
-        return $this->belongsToMany('WebDirectory\appli\core\domain\entities\Entrees', 'entrees2departement', 'id_entrees', 'id_departement');
+        return $this->belongsToMany('WebDirectory\appli\core\domain\entities\Entrees', 'entrees2departement','id_departement','id_entrees');
     }
 
 }

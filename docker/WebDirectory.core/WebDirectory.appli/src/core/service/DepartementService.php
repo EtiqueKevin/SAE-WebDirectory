@@ -3,6 +3,7 @@
 namespace WebDirectory\appli\core\service;
 
 use WebDirectory\appli\core\domain\entities\Departement;
+use WebDirectory\appli\core\domain\entities\Entrees;
 
 class DepartementService implements IDepartementService{
 
@@ -15,6 +16,8 @@ class DepartementService implements IDepartementService{
                 'departement' => [
                     'id' => $d->id,
                     'nom' => $d->nom,
+                    'etage' => $d->etage,
+                    'description' => $d->description,
                 ],
             ];
         }
@@ -31,7 +34,7 @@ class DepartementService implements IDepartementService{
      */
     public function getDepartementById(string $id): array
     {
-        $departement = Entrees::find($id);
+        $departement = Departement::find($id);
         if(!$departement){
             throw new OrmException("Le departement n'existe pas");
         }

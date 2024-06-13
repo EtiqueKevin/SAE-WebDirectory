@@ -1,0 +1,37 @@
+{% extends "Index.twig" %}
+
+{% block content %}
+
+    <div>
+        <h1>Entrees par departement</h1>
+        <div>
+            <form action="/entreesParDepartement" method="post">
+                <label for="departement">Departement</label>
+                <select id="id" name="id">
+                    {% for d in departements %}
+                        <option value="{{ d.departement.id }} " {% if selected == d.departement.id  %}  selected {% endif %}>{{ d.departement.nom }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Rechercher</button>
+            </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Departement</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in entrees %}
+            <tr>
+                <td>{{ e.entree.nom }}</td>
+                <td>{{ e.entree.prenom }}</td>
+                <td>{{ e.entree.departement }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

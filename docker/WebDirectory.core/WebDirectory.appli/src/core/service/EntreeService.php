@@ -90,6 +90,7 @@ class   EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departement' => $departement->nom,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]

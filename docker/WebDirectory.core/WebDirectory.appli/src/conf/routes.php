@@ -4,6 +4,9 @@ declare(strict_types=1);
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
+use WebDirectory\appli\app\actions\affichageDonnees\GetEntreesAffichage;
+use WebDirectory\appli\app\actions\affichageDonnees\GetEntreesParDepartementAffichage;
+use WebDirectory\appli\app\actions\affichageDonnees\PostEntreesParDepartementAffichage;
 use WebDirectory\appli\app\actions\gestionDonnees\GetDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostDepartementCreate;
@@ -25,7 +28,11 @@ return function( \Slim\App $app): \Slim\App {
 
     $app->post('/departement/create[/]', PostDepartementCreate::class)->setName('postDepartementCreate');
 
-    $app->get('/entrees[/]', \WebDirectory\appli\app\actions\affichageDonnees\GetEntreesAffichage::class)->setName('getEntreesAffichage');
+    $app->get('/entrees[/]', GetEntreesAffichage::class)->setName('getEntreesAffichage');
+
+    $app->get('/entreesParDepartement[/]', GetEntreesParDepartementAffichage::class)->setName('getEntreesParDepartementAffichage');
+
+    $app->post('/entreesParDepartement[/]', PostEntreesParDepartementAffichage::class)->setName('postEntreesParDepartementAffichage');
 
     return $app;
 
