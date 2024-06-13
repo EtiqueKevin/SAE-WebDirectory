@@ -1,7 +1,7 @@
 driver=mysql
 username=webdirectory_user
 password=webdirectory_password
-host=sql
+host=webdirectory.db
 database=webdirectory_db
 charset=utf8
 collation=utf8_unicode_ci

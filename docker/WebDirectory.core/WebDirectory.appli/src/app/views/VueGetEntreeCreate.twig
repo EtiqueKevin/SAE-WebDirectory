@@ -1,0 +1,18 @@
+{% extends "Index.twig" %}
+
+{% block content %}
+    <div id="home">
+
+        <form action="/entree/create" method="post" id="form-new-entree">
+            <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
+            <div><label for="prenom"></label><input type="text" id="prenom" name="prenom" placeholder="Prenom"></div>
+            <div><label for="nbBureau"></label><input type="text" id="nbBureau" name="nbBureau" placeholder="Numéro Bureau"></div>
+            <div><label for="tel_mobile"></label><input type="tel" id="tel_mobile" name="tel_mobile" placeholder="Numéro téléphone mobile"></div>
+            <div><label for="tel_fixe"></label><input type="tel" id="tel_fixe" name="tel_fixe" placeholder="Numéro téléphone fixe"></div>
+            <div><label for="email"></label><input type="email" id="email" name="email" placeholder="Email"></div>
+            <br>
+            <div><label for="departement_id"></label><input type="text" id="departement_id" name="departement_id" placeholder="Id du département"></div>
+            <button  type="submit">Create</button>
+        </form>
+    </div>
+{% endblock %}
