@@ -9,6 +9,10 @@ async function search(){
     let departements = await departement.getDepartement();
     let users = await annuaire.getEntries();
 
+    if(nameFilter !== ''){
+        users = await annuaire.filterByName(users, nameFilter);
+    }
+
     if(departmentFilter !== ''){
         users = await annuaire.filterByDepartment(users, departmentFilter);
     }
@@ -19,7 +23,6 @@ async function search(){
         search();
     });
 }
-
 
 async function init(){
     let departements = await departement.getDepartement();

@@ -14,4 +14,8 @@ async function filterByDepartment(users, departementId) {
     return users.filter(user => user.departements.includes(departementId));
 }
 
+async function filterByName(users, name) {
+    return users.filter(user => user.nom.toLowerCase().includes(name.toLowerCase()) || user.prenom.toLowerCase().includes(name.toLowerCase()));
+}
+
 export { getEntries, filterByDepartment, filterByName };
