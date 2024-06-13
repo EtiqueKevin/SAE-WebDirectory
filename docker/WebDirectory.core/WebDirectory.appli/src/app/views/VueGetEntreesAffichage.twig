@@ -1,0 +1,22 @@
+{% extends "Index.twig" %}
+
+{% block content %}
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Departement</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in entrees %}
+            <tr>
+                <td>{{ e.entree.nom }}</td>
+                <td>{{ e.entree.prenom }}</td>
+                <td>{{ e.entree.departement }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

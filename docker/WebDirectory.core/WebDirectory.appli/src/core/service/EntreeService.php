@@ -12,6 +12,10 @@ class   EntreeService implements IEntreeService{
         $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
+
+            //récupération des departements de l'entree
+            $departement = $e->entrees2departement()->first();
+
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -23,6 +27,7 @@ class   EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departement' => $departement->nom,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]

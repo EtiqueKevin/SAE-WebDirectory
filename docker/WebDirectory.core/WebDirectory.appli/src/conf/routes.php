@@ -25,6 +25,8 @@ return function( \Slim\App $app): \Slim\App {
 
     $app->post('/departement/create[/]', PostDepartementCreate::class)->setName('postDepartementCreate');
 
+    $app->get('/entrees[/]', \WebDirectory\appli\app\actions\affichageDonnees\GetEntreesAffichage::class)->setName('getEntreesAffichage');
+
     return $app;
 
 };
