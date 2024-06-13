@@ -23,6 +23,8 @@ DROP TABLE IF EXISTS departement;
 CREATE TABLE departement (
                              `id` int(11) NOT NULL AUTO_INCREMENT,
                              `nom` varchar(128) NOT NULL,
+                             `etage` int(2) NOT NULL,
+                             `description` varchar(128) DEFAULT NULL,
                              PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

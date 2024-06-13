@@ -1,7 +1,7 @@
-INSERT INTO departement (nom)
+INSERT INTO departement (nom, etage, description)
 VALUES
-    ('Informatique'),
-    ('Ressources Humaines');
+    ('Informatique',1,'Service informatique'),
+    ('Ressources Humaines',2,'Service RH');
 
 INSERT INTO entrees (nom, prenom, nbureau, tel_mobile, tel_fixe, email, created_at)
 VALUES

@@ -11,7 +11,13 @@
             <div><label for="tel_fixe"></label><input type="tel" id="tel_fixe" name="tel_fixe" placeholder="Numéro téléphone fixe"></div>
             <div><label for="email"></label><input type="email" id="email" name="email" placeholder="Email"></div>
             <br>
-            <div><label for="departement_id"></label><input type="text" id="departement_id" name="departement_id" placeholder="Id du département"></div>
+            <!--<div><label for="departement_id"></label><input type="text" id="departement_id" name="departement_id" placeholder="Id du département"></div>-->
+            <div><label for="departement_id"></label><select id="departement_id" name="departement_id">
+                {% for d in departements %}
+                    <option value="{{ d.departement.id }}">{{ d.departement.nom }}</option>
+                {% endfor %}
+            </select>
+            </div>
             <button  type="submit">Create</button>
         </form>
     </div>

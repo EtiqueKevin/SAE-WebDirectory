@@ -23,11 +23,15 @@ class PostEntreeCreate extends AbstractAction{
 
         $args = $request->getParsedBody();
 
+        var_dump($args);
+
         try {
             $this->entreeService->createEntree($args);
         } catch (OrmException  $e) {
             throw new HttpBadRequestException($request, $e->getMessage());
         }
+
+        var_dump($args);
 
         $view = Twig::fromRequest($request);
         return $view->render($response, 'VuePostEntreeCreate.twig', ['args' => $args]);
