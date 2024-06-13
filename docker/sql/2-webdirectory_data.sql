@@ -3,7 +3,7 @@ VALUES
 ('Informatique'), 
 ('Ressources Humaines');
 
-INSERT INTO utilisateur (nom, prenom, nbureau, tel_mobile, tel_fixe, email, created_at)
+INSERT INTO entrees (nom, prenom, nbureau, tel_mobile, tel_fixe, email, created_at)
 VALUES 
 ('Dupont', 'Jean', 123, '0612345678', '0123456789', 'jean.dupont@email.com', '2024-06-13 06:04:00'),
 ('Martin', 'Marie', 234, '0623456789', '0134567890', 'marie.martin@email.com', '2024-06-12 06:04:00'),
@@ -16,7 +16,7 @@ VALUES
 ('Moreau', 'Chloe', 901, '0690123456', '0201234567', 'chloe.moreau@email.com', '2024-06-05 06:04:00'),
 ('Laurent', 'Camille', 102, '0701234567', '0212345678', 'camille.laurent@email.com', '2024-06-04 06:04:00');
 
-INSERT INTO utilisateur2departement (id_utilisateur, id_departement)
+INSERT INTO entrees2departement (id_entrees, id_departement)
 VALUES 
 (1, 1),
 (1, 2),
