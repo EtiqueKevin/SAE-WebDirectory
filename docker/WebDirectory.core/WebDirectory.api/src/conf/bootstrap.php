@@ -10,8 +10,6 @@ $app = AppFactory::create();
 
 $app->addRoutingMiddleware();
 
-$app->addErrorMiddleware(true, false, false);
-
 $app= (require_once __DIR__ . '/routes.php')($app);
 
 Eloquent::init(__DIR__ . '/gift.db.conf.ini.dist');
@@ -40,7 +38,7 @@ $errorMiddleware->setErrorHandler(
         return $response->withStatus(404);
     }
 );
-
+$app->bodyParsingMiddleware();
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
