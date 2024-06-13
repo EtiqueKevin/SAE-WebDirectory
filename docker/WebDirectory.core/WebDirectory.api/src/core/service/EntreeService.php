@@ -12,20 +12,28 @@ class EntreeService implements IEntreeService{
         $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
+            $dep = $e->entrees2departement()->get();
+            $depTab = [];
+            foreach ($dep as $d){
+                $depTab[] = [
+                    'departement' => [
+                        'id' => $d->id,
+                        'nom' => $d->nom,
+                    ],
+                    'links' => [
+                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    ],
+                ];
+            }
             $tab[] = [
                 'entree' => [
-                    'id' => $e->id,
                     'nom' => $e->nom,
                     'prenom' => $e->prenom,
-                    'num_bureau' => $e->nbureau,
-                    'tel_mobile' => $e->tel_mobile,
-                    'tel_fixe' => $e->tel_fixe,
-                    'email' => $e->email,
-                    'created_at' => $e->created_at,
-                    'updated_at' => $e->updated_at,
+                    'departements' => $depTab,
+
                 ],
                 'links' => [
-                    'self' => ['href' => '/entrees/'.$e->id]
+                    'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
         }
@@ -45,6 +53,19 @@ class EntreeService implements IEntreeService{
         if ($entree == null){
             throw new OrmException("Entree non trouvée");
         }
+        $dep = $entree->entrees2departement()->get();
+        $depTab = [];
+        foreach ($dep as $d){
+            $depTab[] = [
+                'departement' => [
+                    'id' => $d->id,
+                    'nom' => $d->nom,
+                ],
+                'links' => [
+                    'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                ],
+            ];
+        }
         return [
             'type' => 'resource',
             'entree' => [
@@ -57,6 +78,7 @@ class EntreeService implements IEntreeService{
                 'email' => $entree->email,
                 'created_at' => $entree->created_at,
                 'updated_at' => $entree->updated_at,
+                'departements' => $depTab
             ],
         ];
     }
@@ -71,9 +93,21 @@ class EntreeService implements IEntreeService{
             throw new OrmException("Departement non trouvé");
         }
         $entrees = $departement->entrees2departement()->get();
-
         $tab = [];
         foreach ($entrees as $e){
+            $dep = $e->entrees2departement()->get();
+            $depTab = [];
+            foreach ($dep as $d){
+                $depTab[] = [
+                    'departement' => [
+                        'id' => $d->id,
+                        'nom' => $d->nom,
+                    ],
+                    'links' => [
+                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    ],
+                ];
+            }
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -85,9 +119,10 @@ class EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departements' => $depTab
                 ],
                 'links' => [
-                    'self' => ['href' => '/entrees/'.$e->id]
+                    'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
         }
@@ -104,6 +139,19 @@ class EntreeService implements IEntreeService{
         $entrees = Entrees::where('nom', 'like', $search)->get();
         $tab = [];
         foreach ($entrees as $e){
+            $dep = $e->entrees2departement()->get();
+            $depTab = [];
+            foreach ($dep as $d){
+                $depTab[] = [
+                    'departement' => [
+                        'id' => $d->id,
+                        'nom' => $d->nom,
+                    ],
+                    'links' => [
+                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    ],
+                ];
+            }
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -115,9 +163,10 @@ class EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departements' => $depTab
                 ],
                 'links' => [
-                    'self' => ['href' => '/entrees/'.$e->id]
+                    'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
         }
@@ -138,6 +187,19 @@ class EntreeService implements IEntreeService{
         $entrees = Entrees::orderBy('nom', $sort[1])->get();
         $tab = [];
         foreach ($entrees as $e){
+            $dep = $e->entrees2departement()->get();
+            $depTab = [];
+            foreach ($dep as $d){
+                $depTab[] = [
+                    'departement' => [
+                        'id' => $d->id,
+                        'nom' => $d->nom,
+                    ],
+                    'links' => [
+                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    ],
+                ];
+            }
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -149,9 +211,10 @@ class EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departements' => $depTab
                 ],
                 'links' => [
-                    'self' => ['href' => '/entrees/'.$e->id]
+                    'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
         }
@@ -181,6 +244,19 @@ class EntreeService implements IEntreeService{
         $entrees = $departement->entrees2departement()->where('nom', 'like', $search)->orderBy('nom', $sort)->get();
         $tab = [];
         foreach ($entrees as $e){
+            $dep = $e->entrees2departement()->get();
+            $depTab = [];
+            foreach ($dep as $d){
+                $depTab[] = [
+                    'departement' => [
+                        'id' => $d->id,
+                        'nom' => $d->nom,
+                    ],
+                    'links' => [
+                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    ],
+                ];
+            }
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -192,9 +268,10 @@ class EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
+                    'departements' => $depTab
                 ],
                 'links' => [
-                    'self' => ['href' => '/entrees/'.$e->id]
+                    'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
         }

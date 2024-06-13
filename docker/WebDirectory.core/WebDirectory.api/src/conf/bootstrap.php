@@ -35,10 +35,11 @@ $errorMiddleware->setErrorHandler(
             'message' => 'Ressource non trouvée',
             'description' => 'La ressource demandée n\'existe pas ou plus'
         ]));
+        $response = $response->withHeader('Content-Type', 'application/json');
         return $response->withStatus(404);
     }
 );
-$app->bodyParsingMiddleware();
+$app->addBodyParsingMiddleware();
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
