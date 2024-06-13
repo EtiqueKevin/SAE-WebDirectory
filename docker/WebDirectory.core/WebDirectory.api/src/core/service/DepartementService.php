@@ -31,7 +31,7 @@ class DepartementService implements IDepartementService{
      */
     public function getDepartementById(string $id): array
     {
-        $departement = Entrees::find($id);
+        $departement = Departement::find($id);
         if(!$departement){
             throw new OrmException("Le departement n'existe pas");
         }
