@@ -26,7 +26,7 @@ CREATE TABLE departement (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `utilisateur2departement`;
+DROP TABLE IF EXISTS `entrees2departement`;
 CREATE TABLE entrees2departement (
     `id_entrees` int(11) NOT NULL,
     `id_departement` int(11) NOT NULL,
