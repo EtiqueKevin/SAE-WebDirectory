@@ -142,16 +142,25 @@ class   EntreeService implements IEntreeService{
         }
 
         // Création de l'entree
-        $entree = new Entrees();
-        $entree->nom = $data['nom'];
-        $entree->prenom = $data['prenom'];
-        $entree->nbureau = $data['nbBureau'];
-        $entree->tel_mobile = $data['tel_mobile'];
-        $entree->tel_fixe = $data['tel_fixe'];
-        $entree->email = $data['email'];
-        $entree->save();
+        try {
+            $entree = new Entrees();
+            $entree->nom = $data['nom'];
+            $entree->prenom = $data['prenom'];
+            $entree->nbureau = $data['nbBureau'];
+            $entree->tel_mobile = $data['tel_mobile'];
+            $entree->tel_fixe = $data['tel_fixe'];
+            $entree->email = $data['email'];
+            $entree->save();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la création de l'entree");
+        }
+
 
         // Ajout de l'entree au departement
-        $entree->entrees2departement()->attach($data['departement_id']);
+        try {
+            $entree->entrees2departement()->attach($data['departement_id']);
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de l'ajout de l'entree au departement");
+        }
     }
 }

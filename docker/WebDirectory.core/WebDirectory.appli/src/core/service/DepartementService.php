@@ -43,4 +43,39 @@ class DepartementService implements IDepartementService{
             ],
         ];
     }
+
+    public function createDepartement(array $args): void{
+
+        if(!isset($args['nom']) || !isset($args['etage']) || !isset($args['description'])){
+            throw new OrmException("Les champs nom, etage et description sont obligatoires");
+        }
+
+        //sanitize
+        if(!filter_var($args['nom'], FILTER_SANITIZE_SPECIAL_CHARS) || !filter_var($args['description'], FILTER_SANITIZE_SPECIAL_CHARS)){
+            throw new OrmException("Les champs nom et description sont non valides");
+        }
+
+        if (!filter_var($args['etage'], FILTER_VALIDATE_INT)){
+            throw new OrmException("Le champ etage doit être un entier");
+        }
+
+        //vérfie si le departement existe déjà
+
+        $departement = Departement::where('nom', $args['nom'])->first();
+
+        if($departement != null){
+            throw new OrmException("Le departement existe déjà");
+        }
+
+        try {
+            $departement = new Departement();
+            $departement->nom = $args['nom'];
+            $departement->etage = $args['etage'];
+            $departement->description = $args['description'];
+            $departement->save();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la création du departement");
+        }
+
+    }
 }
