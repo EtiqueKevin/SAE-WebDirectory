@@ -18,6 +18,7 @@ async function generateUsers() {
     const users = [];
     for(let i = 0; i < 5; i++) {
         const user = {
+            id : i,
             nom: `Nom ${i}`,
             prenom: `Prenom ${i}`,
             fonction: `Fonction ${i}`,

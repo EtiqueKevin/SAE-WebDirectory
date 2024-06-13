@@ -11,15 +11,25 @@ export const annuaireTemplate = `
 </form>
 
 {{#if data.users.length}}
-<ul>
+<div>
     {{#each data.users}}
-        <li>
+        <div id="{{id}}" class="entreeListe">
             <h2>{{nom}} {{prenom}}</h2>
             <p>Service / Département: {{#each departements}}{{this}}, {{/each}}</p>
-        </li>
+        </div>
     {{/each}}
-</ul>
+</div>
 {{else}}
     <h1>Aucun résultat</h1>
 {{/if}}
 `;
+
+export const entreeDetailTemplate = `
+<br><hr><br>
+<h1>{{nom}} {{prenom}}</h1>
+<p>Service / Département: {{#each departements}}{{this}}, {{/each}}</p>
+<p>Téléphone mobile: {{telephoneMobile}}</p>
+<p>Téléphone fixe: {{telephoneFixe}}</p>
+<p>Email: <a href="mailto:{{adresse}}">{{adresse}}</a></p>
+`;
+

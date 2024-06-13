@@ -9,6 +9,13 @@ function displayAnnuaire(users, departements) {
 
     const template = Handlebars.compile(templates.annuaireTemplate);
     document.querySelector('#annuaire').innerHTML = template({data});
+    document.querySelector('#entree').innerHTML = '';
 }
 
-export { displayAnnuaire };
+function displayEntreeDetail(user) {
+    console.log(user);
+    const template = Handlebars.compile(templates.entreeDetailTemplate);
+    document.querySelector('#entree').innerHTML = template(user);
+}
+
+export { displayAnnuaire, displayEntreeDetail };

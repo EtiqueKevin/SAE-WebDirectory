@@ -1,4 +1,4 @@
-import { displayAnnuaire } from "./ui";
+import * as ui from "./ui";
 import * as annuaire from "./annuaire";
 import * as departement from "./departement";
 
@@ -17,10 +17,20 @@ async function search(){
         users = await annuaire.filterByDepartment(users, departmentFilter);
     }
 
-    displayAnnuaire(users, departements);
+    showAnnuaire(users, departements);
+}
+
+function showAnnuaire(users, departements){
+    ui.displayAnnuaire(users, departements);
     document.getElementById('formButton').addEventListener('click', function(event){
         event.preventDefault();
         search();
+    });
+    document.querySelectorAll('.entreeListe').forEach(function(element){
+        element.addEventListener('click', async function(){
+            let user = await annuaire.getEntry(element.id);
+            ui.displayEntreeDetail(user);
+        });
     });
 }
 
@@ -28,11 +38,9 @@ async function init(){
     let departements = await departement.getDepartement();
     let users = await annuaire.getEntries();
 
-    displayAnnuaire(users, departements);
-    document.getElementById('formButton').addEventListener('click', function(event){
-        event.preventDefault();
-        search();
-    });
+    console.log(users);
+    
+    showAnnuaire(users, departements);
 }
 
 window.addEventListener('load', init);
