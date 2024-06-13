@@ -9,4 +9,9 @@ async function getEntries() {
     return entries;
 }
 
+async function filterByDepartment(users, departementId) {
+    departementId = parseInt(departementId);
+    return users.filter(user => user.departements.includes(departementId));
+}
+
 export { getEntries, filterByDepartment, filterByName };
