@@ -41,4 +41,8 @@ $errorMiddleware->setErrorHandler(
     }
 );
 
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
 return $app;
