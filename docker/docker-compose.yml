@@ -13,6 +13,7 @@ services:
       - ./WebDirectory.core/WebDirectory.appli/public:/var/www/html
       - ./WebDirectory.core/WebDirectory.appli/src:/var/www/src
       - ./WebDirectory.core/WebDirectory.appli/tests:/var/www/tests
+      - ./WebDirectory.core/shared/img:/var/www/html/img
     working_dir: /var/www/src
     networks:
       - webdirectory.net

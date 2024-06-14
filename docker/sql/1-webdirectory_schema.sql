@@ -17,6 +17,7 @@ CREATE TABLE `entrees` (
                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            `updated_at` timestamp NULL DEFAULT NULL,
                            `publie` boolean DEFAULT FALSE,
+                           `image` varchar(255) DEFAULT NULL,
                            PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

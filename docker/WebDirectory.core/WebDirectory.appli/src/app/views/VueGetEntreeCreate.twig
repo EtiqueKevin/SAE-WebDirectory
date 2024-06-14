@@ -3,7 +3,7 @@
 {% block content %}
     <div id="home">
 
-        <form action="/entree/create" method="post" id="form-new-entree">
+        <form action="/entree/create" method="post" id="form-new-entree" enctype="multipart/form-data">
 
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
             <div><label for="prenom"></label><input type="text" id="prenom" name="prenom" placeholder="Prenom"></div>
@@ -19,6 +19,7 @@
                 {% endfor %}
             </select>
             </div>
+            <div><label for="image"></label><input type="file" id="image" name="image" placeholder="Image" accept="image/jpeg, image/png, image/gif, image/jpg"></div>
             <input type="hidden" name="csrf" value="{{ csrf }}">
             <button  type="submit">Create</button>
         </form>

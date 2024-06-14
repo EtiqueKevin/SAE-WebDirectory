@@ -42,7 +42,6 @@ class GetEntreeCreate extends AbstractAction{
         }
 
         $token = CsrfService::generate();
-        var_dump($token);
 
         $view = Twig::fromRequest($request);
         return $view->render($response, 'VueGetEntreeCreate.twig', ['departements' => $departements['departements'],'csrf'=> $token]);

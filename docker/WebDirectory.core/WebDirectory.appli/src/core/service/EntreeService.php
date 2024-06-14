@@ -150,6 +150,34 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("L'utilisateur existe déjà");
         }
 
+        $fileNameNew = null;
+
+        if (!isset($_FILES['image'])) {
+            echo 'No files uploaded';
+        }else {
+            $file = $_FILES['image'];
+            $fileName = $file['name'];
+            $fileTmpName = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $fileError = $file['error'];
+            $fileType = $file['type'];
+
+            var_dump($fileType);
+
+            $allowed = array('image/jpg', 'image/jpeg', 'image/png');
+
+            if(in_array($fileType, $allowed)){
+
+                //générer un nom unique pour l'image
+                $fileNameNew = uniqid('', true).".".explode("/",$fileType)[1];
+                $fileDestination = './img/'.$fileNameNew;
+                move_uploaded_file($fileTmpName, $fileDestination);
+            }else{
+                throw new OrmException("type de d'image non valide");
+            }
+
+        }
+
         // Création de l'entree
         try {
             $entree = new Entrees();
@@ -159,11 +187,11 @@ class   EntreeService implements IEntreeService{
             $entree->tel_mobile = $data['tel_mobile'];
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
+            $entree->image = $fileNameNew;
             $entree->save();
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de la création de l'entree");
         }
-
 
         // Ajout de l'entree au departement
         try {
