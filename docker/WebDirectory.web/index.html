@@ -2,17 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>td6</title>
+  <title>WebDirectory</title>
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+<!-- Header -->
 <header>
-</header>
-<main id="annuaire">
+  <h1>WebDirectory</h1>
+  <!-- Navigation -->
+  <nav id="head">
+  </nav>
 
+  <div>
+    <input type="checkbox" id="theme-toggle-button">
+    <label for="myCheckbox">Dark Theme</label>
+  </div>
+</header>
+
+<main>
+  <!-- Annuaire -->
+  <section id="annuaire"></section>
 </main>
 
-<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-<script  src='index.js' defer ></script>
+<!-- Modal -->
+<div id="myModal" class="modal">
+</div>
+
+<script  src='out.js' defer ></script>
 </body>
 </html>

@@ -2,45 +2,59 @@ import * as ui from "./ui";
 import * as annuaire from "./annuaire";
 import * as departement from "./departement";
 
-async function search(){
-    const nameFilter = document.getElementById('nameFilter').value;
-    const departmentFilter = document.getElementById('departmentFilter').value;
-
-    let departements = await departement.getDepartement();
-    let users = await annuaire.getEntries();
-
-    if(nameFilter !== ''){
-        users = await annuaire.filterByName(users, nameFilter);
-    }
-
-    if(departmentFilter !== ''){
-        users = await annuaire.filterByDepartment(users, departmentFilter);
-    }
-
-    showAnnuaire(users, departements);
-}
-
-function showAnnuaire(users, departements){
-    ui.displayAnnuaire(users, departements);
-    document.getElementById('formButton').addEventListener('click', function(event){
-        event.preventDefault();
-        search();
-    });
+function getAnnuaire(users){
+    ui.displayAnnuaire(users);
     document.querySelectorAll('.entreeListe').forEach(function(element){
         element.addEventListener('click', async function(){
-            let user = await annuaire.getEntry(element.id);
-            ui.displayEntreeDetail(user);
+            let entry = await annuaire.getEntry(element.getAttribute('data-entreeUrl'));
+            ui.displayEntreeDetail(entry);
         });
     });
 }
 
-async function init(){
-    let departements = await departement.getDepartement();
-    let users = await annuaire.getEntries();
+function getForm(departements){
+    ui.displayForm(departements);
+    document.getElementById('formButton').addEventListener('click', async function (event){
+        event.preventDefault();
+        
+        const nameFilter = document.getElementById('nameFilter').value;
+        const departmentFilter = document.getElementById('departmentFilter').value;
+        const sortFilter = document.getElementById('sortFilter').value;
 
-    console.log(users);
-    
-    showAnnuaire(users, departements);
+        let entrees = await annuaire.search(departmentFilter, nameFilter, sortFilter);
+        getAnnuaire(entrees);
+    });
+}
+
+async function init(){
+    let departements = await departement.getDepartement('/api/services');
+    let users = await annuaire.getEntries('/api/entrees/?sort=nom-asc');
+
+    getAnnuaire(users);
+    getForm(departements);
+
+    // Add event listener to close modal
+    var modal = document.getElementById("myModal");
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+        modal.innerHTML = '';
+      }
+    }
+
+    document.getElementById('theme-toggle-button').addEventListener('click', function(){
+        const root = document.documentElement;
+        const currentTheme = root.getAttribute('data-theme');
+        root.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDarkScheme) {
+        document.getElementById('theme-toggle-button').checked = true;
+        const root = document.documentElement;
+        const currentTheme = root.getAttribute('data-theme');
+        root.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
 }
 
 window.addEventListener('load', init);

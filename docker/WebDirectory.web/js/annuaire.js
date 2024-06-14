@@ -1,25 +1,29 @@
-import { generateUsers } from "./loader";
+import { loadData } from "./loader";
 
 let  entries = [];
 
-async function getEntries() {
-    if (entries.length === 0) {
-        entries = await generateUsers();
-    }
+async function getEntries(url) {
+    entries = await loadData(url);
     return entries;
 }
 
-async function getEntry(id) {
-    return entries.find(user => user.id == id);
+async function getEntry(url) {
+    return await loadData(url);
 }
 
-async function filterByDepartment(users, departementId) {
-    departementId = parseInt(departementId);
-    return users.filter(user => user.departements.includes(departementId));
+async function search(depId, name, sort) {
+    let url = '';
+    if (depId && name) {
+        url = `/api/services/${depId}/entrees/search/?q=${name}&sort=${sort}`;
+    } else if (name) {
+        url = `/api/entrees/search/?q=${name}&sort=${sort}`;
+    } else if (depId) {
+        url = `/api/services/${depId}/entrees/?sort=${sort}`;
+    } else {
+        url = `/api/entrees/?sort=${sort}`;
+    }
+
+    return await getEntries(url);
 }
 
-async function filterByName(users, name) {
-    return users.filter(user => user.nom.toLowerCase().includes(name.toLowerCase()) || user.prenom.toLowerCase().includes(name.toLowerCase()));
-}
-
-export { getEntries, filterByDepartment, filterByName, getEntry };
+export { getEntries, search, getEntry };

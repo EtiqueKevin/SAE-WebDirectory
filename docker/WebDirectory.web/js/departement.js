@@ -1,10 +1,10 @@
-import { generateDepartements } from "./loader";
+import { loadData } from "./loader";
 
 let departement = [];
 
-async function getDepartement() {
+async function getDepartement(url) {
     if(departement.length === 0) {
-        departement = await generateDepartements();
+        departement = await loadData(url);
     }
 
     return departement;
