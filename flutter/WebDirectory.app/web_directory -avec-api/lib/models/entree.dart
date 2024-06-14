@@ -1,4 +1,4 @@
-import 'package:web_directory/models/Departement.dart';
+import 'package:web_directory/models/departement.dart';
 
 class Entree {
   String nom; 
@@ -20,6 +20,7 @@ class Entree {
   });
 
   factory Entree.fromJson(Map<String, dynamic> json) {
+ 
     return Entree(
       nom: json['nom'],
       prenom: json['prenom'],

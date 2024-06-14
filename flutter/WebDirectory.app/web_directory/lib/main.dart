@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
             future: Provider.of<EntreeProvider>(context, listen: false).fetchEntrees(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                return EntreeMaster();
+                return const EntreeMaster();
               }else if(snapshot.hasError){
                 return Text('Error: ${snapshot.error}');
               }

@@ -2,47 +2,31 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:web_directory/models/entree.dart';
 
+import '../models/Departement.dart';
+
 class EntreeProvider extends ChangeNotifier {
+  List<Entree> _entreesGlobal = [];
   List<Entree> _entrees = [];
+  List<Departement> _departements = [];
   final dio = Dio();
 
+  List<Entree> get entreesGlobal => _entreesGlobal;
   List<Entree> get entrees => _entrees;
+  void set entrees(List<Entree> entrees) => _entrees = entrees;
+  List<Departement> get departements => _departements;
 
   Future<List<Entree>> fetchEntrees() async {
-    await Future.delayed(const Duration(milliseconds: 100), (){});
-    /*
-    Response response = await dio.get('');
-    _entrees = response.data.map<Entree>((entree) => Entree.fromJson(entree)).toList(); 
-    */
+    Response response = await dio.get('http://docketu.iutnc.univ-lorraine.fr:43000/api/entrees');
+          _entreesGlobal = await Future.wait(response.data['entrees'].map<Future<Entree>>((entree) async {
+      response = await dio.get('http://docketu.iutnc.univ-lorraine.fr:43000' + entree['links']['self']['href']);
+      print(response.data['entree']);
+      return Entree.fromJson(response.data['entree']);
+    }).toList());
 
-    _entrees = [
-      Entree(
-        nom: 'Doe',
-        prenom: 'John',
-        numBureau: 123,
-        numeroFixe: '0123456789',
-        numeroPerso: '9876543210',
-        email: 'feur@feur.com',
-      ),
-      Entree(
-        nom: 'Jean',
-        prenom: 'Jane',
-        numBureau: 456,
-        numeroFixe: '0123456789',
-        numeroPerso: '0684872984',
-        email: 'zfqf@ergerg.com',
-      ),
-      Entree(
-        nom: 'Doe',
-        prenom: 'Jane',
-        numBureau: 789,
-        numeroFixe: '0123456789',
-        numeroPerso: '9876543210',
-        email: 'fvdfvsd'
-      ),
-    ];
+    await fetchDepartements();
 
-    entrees.sort((a, b) => (a.nom+a.prenom).compareTo(b.nom + b.prenom));
+    _entrees = _entreesGlobal;
+
     notifyListeners();
     return _entrees;
   }
@@ -89,5 +73,41 @@ class EntreeProvider extends ChangeNotifier {
     return _entrees;
   }
 
+
+  Future<List<Departement>> fetchDepartements() async {
+    Response response = await dio.get('http://docketu.iutnc.univ-lorraine.fr:43000/api/services');
+    _departements = response.data['departements'].map<Departement>((departement) => Departement.fromJson(departement['departement'])).toList(); 
+
+    
+    notifyListeners();
+    return _departements;
+  }
+
+
+
+
+
+
+  Future<List<Entree>> fetchEntreeParDepartement(String? departement) async {
+    await Future.delayed(const Duration(milliseconds: 100), (){});
+
+    /*
+    Response response = await dio.get('');
+    _entrees = response.data.map<Entree>((entree) => Entree.fromJson(entree)).toList(); 
+    */
+    _entrees = _entreesGlobal;
+    _entrees = _entrees.where((entree) => entree.departements.any((dep) => dep.nom == departement)).toList();
+    notifyListeners();
+    return _entrees;
+  }
+
+
+
+
+  
+
+  void annulerFiltre() async {
+    _entrees = _entreesGlobal;
+  }
 
 }
