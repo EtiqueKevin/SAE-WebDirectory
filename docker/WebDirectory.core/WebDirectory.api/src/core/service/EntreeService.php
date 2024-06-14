@@ -7,8 +7,9 @@ use webdirectory\api\core\domain\Entrees;
 
 class EntreeService implements IEntreeService{
 
-    public function getEntrees(): array
+    public function getEntrees(string $sort): array
     {
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
         $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
@@ -36,6 +37,15 @@ class EntreeService implements IEntreeService{
                     'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
+        }
+        if ($sort === "asc"){
+            usort($tab, function($a, $b){
+                return $a['entree']['nom'] <=> $b['entree']['nom'];
+            });
+        } else {
+            usort($tab, function($a, $b){
+                return $b['entree']['nom'] <=> $a['entree']['nom'];
+            });
         }
         return [
             'type' => 'collection',
@@ -86,8 +96,9 @@ class EntreeService implements IEntreeService{
     /**
      * @throws OrmException
      */
-    public function getEntreesByService(int $id): array
+    public function getEntreesByService(int $id, string $sort): array
     {
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
         $departement = Departement::find($id);
         if ($departement == null){
             throw new OrmException("Departement non trouvé");
@@ -126,6 +137,15 @@ class EntreeService implements IEntreeService{
                 ],
             ];
         }
+        if ($sort === "asc"){
+            usort($tab, function($a, $b){
+                return $a['entree']['nom'] <=> $b['entree']['nom'];
+            });
+        } else {
+            usort($tab, function($a, $b){
+                return $b['entree']['nom'] <=> $a['entree']['nom'];
+            });
+        }
         return [
             'type' => 'collection',
             'count' => count($tab),
@@ -133,9 +153,10 @@ class EntreeService implements IEntreeService{
         ];
     }
 
-    public function getEntreesBySearch(string $search): array
+    public function getEntreesBySearch(string $search, string $sort): array
     {
         $search = '%'.$search.'%';
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
         $entrees = Entrees::where('nom', 'like', $search)->get();
         $tab = [];
         foreach ($entrees as $e){
@@ -169,6 +190,15 @@ class EntreeService implements IEntreeService{
                     'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
+        }
+        if ($sort === "asc"){
+            usort($tab, function($a, $b){
+                return $a['entree']['nom'] <=> $b['entree']['nom'];
+            });
+        } else {
+            usort($tab, function($a, $b){
+                return $b['entree']['nom'] <=> $a['entree']['nom'];
+            });
         }
         return [
             'type' => 'collection',

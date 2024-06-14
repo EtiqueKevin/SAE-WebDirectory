@@ -14,7 +14,8 @@ class GetEntreesAction extends AbstractAction{
         $this->entree = new EntreeService();
     }
     public function __invoke(Request $request, Response $response, array $args): Response{
-        $prestations = $this->entree->getEntrees();
+        $sort = $request->getQueryParams()['sort'] ?? 'nom-asc';
+        $prestations = $this->entree->getEntrees($sort);
 
         $response->getBody()->write(json_encode($prestations));
         return $response->withHeader('Content-Type', 'application/json');

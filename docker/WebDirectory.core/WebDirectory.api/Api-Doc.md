@@ -52,16 +52,27 @@ Le projet est structuré en plusieurs répertoires principaux :
 - ### `/api/services`
 
   - **GET** : Récupère tous les départements.
+  - **Paramètres** :
+    - `sort` : Tri sur le nom, prend pour valeur :
+      - `nom-asc` : Tri ascendant sur le nom.
+      - `nom-desc` : Tri descendant sur le nom.
 
 - ### `/api/entrees`
 
   - **GET** : Récupère toutes les entrées.
+  - **Paramètres** :
+    - `sort` : Tri sur le nom, prend pour valeur :
+      - `nom-asc` : Tri ascendant sur le nom.
+      - `nom-desc` : Tri descendant sur le nom.
 
 - ### `/api/entrees/search`
 
   - **GET** : Récupère les entrées en fonction d'une recherche.
   - **Paramètres** :
     - `q` : Recherche sur le nom.
+    - `sort` : Tri sur le nom, prend pour valeur :
+      - `nom-asc` : Tri ascendant sur le nom.
+      - `nom-desc` : Tri descendant sur le nom.
 
 - ### `/api/entrees/{id}`
 
@@ -70,6 +81,10 @@ Le projet est structuré en plusieurs répertoires principaux :
 - ### `/api/services/{id}/entrees`
 
     - **GET** : Récupère les entrées d'un département spécifique.
+    - **Paramètres** :
+        - `sort` : Tri sur le nom, prend pour valeur :
+          - `nom-asc` : Tri ascendant sur le nom.
+          - `nom-desc` : Tri descendant sur le nom.
 
 - ### `/api/articles`
 

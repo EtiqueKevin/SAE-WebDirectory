@@ -17,9 +17,10 @@ class GetDepartementsAction extends AbstractAction{
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response{
+        $sort = $request->getQueryParams()['sort'] ?? "nom-asc";
 
         try {
-            $categories = $this->departement->getDepartement();
+            $categories = $this->departement->getDepartement($sort);
         }catch (OrmException $e){
             throw new HttpBadRequestException($request, $e->getMessage());
         }

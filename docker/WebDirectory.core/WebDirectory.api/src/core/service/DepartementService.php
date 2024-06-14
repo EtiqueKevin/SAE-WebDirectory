@@ -6,8 +6,9 @@ use webdirectory\api\core\domain\Departement;
 
 class DepartementService implements IDepartementService{
 
-    public function getDepartement(): array
+    public function getDepartement(string $sort): array
     {
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
         $departements = Departement::all();
         $tab = [];
         foreach ($departements as $d){
@@ -17,6 +18,15 @@ class DepartementService implements IDepartementService{
                     'nom' => $d->nom,
                 ],
             ];
+        }
+        if($sort === 'asc'){
+            usort($tab, function($a, $b){
+                return $a['departement']['nom'] <=> $b['departement']['nom'];
+            });
+        }else{
+            usort($tab, function($a, $b){
+                return $b['departement']['nom'] <=> $a['departement']['nom'];
+            });
         }
         return [
             'type' => 'collection',

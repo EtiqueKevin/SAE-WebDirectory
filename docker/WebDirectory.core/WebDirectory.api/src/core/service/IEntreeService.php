@@ -4,13 +4,13 @@ namespace webdirectory\api\core\service;
 
 interface IEntreeService{
 
-    public function getEntrees(): array;
+    public function getEntrees(string $sort): array;
 
     public function getEntreeById(int $id): array;
 
-    public function getEntreesByService(int $id): array;
+    public function getEntreesByService(int $id, string $sort): array;
 
-    public function getEntreesBySearch(string $search): array;
+    public function getEntreesBySearch(string $search, string $sort): array;
 
     public function getEntreesSorted(string $sort): array;
 

@@ -22,8 +22,9 @@ class GetEntreesBySearchAction extends AbstractAction
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         $search = $request->getQueryParams()['q'] ?? null;
+        $sort = $request->getQueryParams()['sort'] ?? "nom-asc";
         try{
-            $entrees = $this->entreeService->getEntreesBySearch($search);
+            $entrees = $this->entreeService->getEntreesBySearch($search, $sort);
         }
         catch(OrmException $e){
             throw new HttpBadRequestException($request, $e->getMessage());

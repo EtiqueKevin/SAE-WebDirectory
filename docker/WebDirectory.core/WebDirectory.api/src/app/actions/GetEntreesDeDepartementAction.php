@@ -17,8 +17,9 @@ class GetEntreesDeDepartementAction extends AbstractAction{
         $this->entreeService = new EntreeService();
     }
     public function __invoke(Request $request, Response $response, array $args): Response {
+        $sort = $request->getQueryParams()['sort'] ?? 'nom-asc';
         try {
-            $entrees = $this->entreeService->getEntreesByService($args['id']);
+            $entrees = $this->entreeService->getEntreesByService($args['id'], $sort);
         }catch (OrmException $e){
             throw new HttpBadRequestException($request, $e->getMessage());
         }
