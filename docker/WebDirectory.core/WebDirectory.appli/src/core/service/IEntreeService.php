@@ -12,4 +12,6 @@ interface IEntreeService{
 
     public function createEntree(array $data);
 
+    public function publicationEntre(array $data);
+
 }

@@ -15,6 +15,15 @@
                 <td>{{ e.entree.nom }}</td>
                 <td>{{ e.entree.prenom }}</td>
                 <td>{{ e.entree.departement }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('gestionPublication', {'id': e.entree.id}) }}">
+                        {% if e.entree.publie == 0 %}
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Publier</button>
+                         {% else %}
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Dépublier</button>
+                        {% endif %}
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

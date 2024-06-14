@@ -28,6 +28,7 @@ class   EntreeService implements IEntreeService{
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
                     'departement' => $departement->nom,
+                    'publie' => $e->publie,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -62,6 +63,7 @@ class   EntreeService implements IEntreeService{
                 'email' => $entree->email,
                 'created_at' => $entree->created_at,
                 'updated_at' => $entree->updated_at,
+                'publie' => $entree->publie,
             ],
         ];
     }
@@ -91,6 +93,7 @@ class   EntreeService implements IEntreeService{
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
                     'departement' => $departement->nom,
+                    'publie' => $e->publie,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -167,6 +170,24 @@ class   EntreeService implements IEntreeService{
             $entree->entrees2departement()->attach($data['departement_id']);
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de l'ajout de l'entree au departement");
+        }
+    }
+
+    public function publicationEntre(array $data){
+
+
+        $entree = Entrees::find($data['id']);
+
+        if ($entree == null) {
+            throw new OrmException("L'entree n'existe pas");
+        }
+
+        // Publication de l'entree
+        try {
+            $entree->publie = $entree->publie == 1 ? 0 : 1;
+            $entree->save();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la publication de l'entree");
         }
     }
 }

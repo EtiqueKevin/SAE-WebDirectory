@@ -15,6 +15,7 @@ use WebDirectory\appli\app\actions\gestionDonnees\GetDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeCreate;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionPublication;
 
 return function( \Slim\App $app): \Slim\App {
 
@@ -58,6 +59,8 @@ return function( \Slim\App $app): \Slim\App {
         unset($_SESSION['user']);
         return $response->withHeader('Location', '/')->withStatus(302);
     })->setName('logout');
+
+    $app->post('/entrees/gestionPublication[/]',PostEntreeGestionPublication::class )->setName('gestionPublication');
 
     return $app;
 

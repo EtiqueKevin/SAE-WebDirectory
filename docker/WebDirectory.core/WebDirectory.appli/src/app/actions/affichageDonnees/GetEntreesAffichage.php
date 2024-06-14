@@ -21,6 +21,7 @@ class GetEntreesAffichage extends AbstractAction{
 
     public function __invoke(Request $request, Response $response, array $args): Response{
 
+
         try {
             $entrees = $this->entreeService->getEntrees();
         } catch (OrmException $e) {

@@ -16,6 +16,7 @@ CREATE TABLE `entrees` (
                            `email` varchar(128) DEFAULT NULL,
                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            `updated_at` timestamp NULL DEFAULT NULL,
+                           `publie` boolean DEFAULT FALSE,
                            PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
