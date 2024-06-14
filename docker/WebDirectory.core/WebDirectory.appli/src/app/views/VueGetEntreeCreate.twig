@@ -4,6 +4,7 @@
     <div id="home">
 
         <form action="/entree/create" method="post" id="form-new-entree">
+
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
             <div><label for="prenom"></label><input type="text" id="prenom" name="prenom" placeholder="Prenom"></div>
             <div><label for="nbBureau"></label><input type="text" id="nbBureau" name="nbBureau" placeholder="Numéro Bureau"></div>
@@ -18,6 +19,7 @@
                 {% endfor %}
             </select>
             </div>
+            <input type="hidden" name="csrf" value="{{ csrf }}">
             <button  type="submit">Create</button>
         </form>
     </div>

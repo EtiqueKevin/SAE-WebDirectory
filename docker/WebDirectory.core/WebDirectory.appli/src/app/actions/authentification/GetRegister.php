@@ -7,6 +7,7 @@ use Slim\Views\Twig;
 use WebDirectory\appli\app\actions\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use WebDirectory\appli\app\utils\CsrfService;
 use WebDirectory\appli\core\service\IUtilisateurService;
 use WebDirectory\appli\core\service\UtilisateurService;
 
@@ -32,6 +33,6 @@ class GetRegister extends AbstractAction{
         }
 
         $view =Twig::fromRequest($request);
-        return $view->render($response, 'VueGetRegister.twig');
+        return $view->render($response, 'VueGetRegister.twig', ['csrf'=> CsrfService::generate()]);
     }
 }

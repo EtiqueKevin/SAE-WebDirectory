@@ -175,7 +175,6 @@ class   EntreeService implements IEntreeService{
 
     public function publicationEntre(array $data){
 
-
         $entree = Entrees::find($data['id']);
 
         if ($entree == null) {

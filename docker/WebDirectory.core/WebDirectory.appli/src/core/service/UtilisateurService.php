@@ -7,12 +7,13 @@ use WebDirectory\appli\core\domain\entities\Utilisateur;
 
 class UtilisateurService implements IUtilisateurService{
 
-    function checkUser(array $data): bool{
+    function checkUser(array $data): array
+    {
         $email = $data['email'];
         $password = $data['password'];
 
         if (empty($email) || empty($password)){
-            return false;
+            return ['reussite'=>false];
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -21,14 +22,14 @@ class UtilisateurService implements IUtilisateurService{
 
         $user = Utilisateur::where('email', $email)->first();
         if ($user == null){
-            return false;
+            return ['reussite'=>false];
         }
 
         if(!password_verify($password, $user->password)){
-            return false;
+            return ['reussite'=>false];
         }else{
-            $_SESSION['user'] = ['email' => $user->email, 'role' => $user->role, 'id' => $user->id];
-            return true;
+            return  ['email' => $user->email, 'role' => $user->role, 'id' => $user->id, 'reussite'=>true];
+
         }
     }
 

@@ -1,13 +1,21 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <!--<link rel="stylesheet" href="{{ base_path() }}/scss/main.scss">-->
-    <link rel="stylesheet" href="../../../public/scss/main.scss">
+    <link rel="stylesheet" href="{{ base_path() }}/scss/main.scss">
     <title></title>
 </head>
 <body>
 <div id="header">
     <h2 class="title">WebDirectory</h2>
+    <nav id="menu">
+        <a href="{{url_for('getEntreesAffichage', {},{})}}"><p>ENTREES</p></a>
+        <a href="{{url_for('getEntreesParDepartementAffichage', {},{})}}"><p>ENTREES PAR DEPARTEMENT</p></a>
+        <a href="{{url_for('getEntreeCreate', {},{})}}"><p>CREER UNE ENTREE</p></a>
+        <a href="{{url_for('getDepartementCreate', {},{})}}"><p>CREE UN DEPARTEMENT</p></a>
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+    </nav>
 </div>
 <section id="main">
 

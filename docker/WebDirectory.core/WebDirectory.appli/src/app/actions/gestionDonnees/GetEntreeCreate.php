@@ -7,6 +7,7 @@ use Slim\Views\Twig;
 use WebDirectory\appli\app\actions\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use WebDirectory\appli\app\utils\CsrfService;
 use WebDirectory\appli\core\service\DepartementService;
 use WebDirectory\appli\core\service\IDepartementService;
 use WebDirectory\appli\core\service\IUtilisateurService;
@@ -40,8 +41,11 @@ class GetEntreeCreate extends AbstractAction{
             throw new HttpBadRequestException($request, $e->getMessage());
         }
 
+        $token = CsrfService::generate();
+        var_dump($token);
+
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreeCreate.twig', ['departements' => $departements['departements']]);
+        return $view->render($response, 'VueGetEntreeCreate.twig', ['departements' => $departements['departements'],'csrf'=> $token]);
     }
 
 }
