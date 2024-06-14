@@ -39,8 +39,6 @@ class GetEntreesParDepartementAffichage extends AbstractAction{
             throw new HttpBadRequestException($request, $e->getMessage());
         }
 
-        var_dump($id['id'] ?? null);
-
         $view = Twig::fromRequest($request);
         return $view->render($response, 'VueGetEntreesParDepartementAffichage.twig', ['entrees' => $entrees['entrees'], 'departements' => $departements['departements'], 'selected' => $id['id'] ?? null]);
     }

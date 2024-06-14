@@ -34,3 +34,12 @@ CREATE TABLE entrees2departement (
                                      `id_departement` int(11) NOT NULL,
                                      PRIMARY KEY (`id_departement`, `id_entrees`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS utilisateur;
+CREATE TABLE utilisateur (
+                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                             `email` varchar(128) NOT NULL,
+                             `password`  varchar(128) NOT NULL,
+                             `role` varchar(128) NOT NULL,
+                             PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
