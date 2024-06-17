@@ -22,7 +22,7 @@ class EntreeService implements IEntreeService{
                         'nom' => $d->nom,
                     ],
                     'links' => [
-                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                        'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                     ],
                 ];
             }
@@ -72,7 +72,7 @@ class EntreeService implements IEntreeService{
                     'nom' => $d->nom,
                 ],
                 'links' => [
-                    'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                    'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                 ],
             ];
         }
@@ -115,7 +115,7 @@ class EntreeService implements IEntreeService{
                         'nom' => $d->nom,
                     ],
                     'links' => [
-                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                        'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                     ],
                 ];
             }
@@ -169,7 +169,7 @@ class EntreeService implements IEntreeService{
                         'nom' => $d->nom,
                     ],
                     'links' => [
-                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                        'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                     ],
                 ];
             }
@@ -225,7 +225,7 @@ class EntreeService implements IEntreeService{
                         'nom' => $d->nom,
                     ],
                     'links' => [
-                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                        'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                     ],
                 ];
             }
@@ -286,7 +286,7 @@ class EntreeService implements IEntreeService{
                         'nom' => $d->nom,
                     ],
                     'links' => [
-                        'self' => ['href' => '/api/departements/'.$d->id.'/entrees']
+                        'self' => ['href' => '/api/services/'.$d->id.'/entrees']
                     ],
                 ];
             }

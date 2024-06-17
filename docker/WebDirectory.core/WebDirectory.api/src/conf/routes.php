@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 
 use Slim\Exception\HttpNotFoundException;
+use webdirectory\api\app\actions\GetDepartementByIdAction;
 use webdirectory\api\app\actions\getEntreesByDepartementAndSearchSortedAction;
 use webdirectory\api\app\actions\GetEntreesBySearchAction;
 use webdirectory\api\app\actions\GetEntreeByIdAction;
@@ -25,7 +26,10 @@ return function( \Slim\App $app): \Slim\App {
 
     $app->get('/api/articles[/]', GetEntreesSorted::class)->setName('entreesSorted');
 
+    $app->get('/api/services/{id}[/]', GetDepartementByIdAction::class)->setName('entreeById');
+
     $app->get('/api/services/{id}/entrees/search[/]', GetEntreesByDepartementAndSearchSortedAction::class)->setName('entreesByDepartementAndSearchSorted');
+
 
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
         throw new HttpNotFoundException($request);
