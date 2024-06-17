@@ -55,8 +55,13 @@ class GetEntreeGestionModification extends AbstractAction{
 
         $token = CsrfService::generate();
 
+        $listeDepartement = array();
+        foreach($entree['entree']['departements'] as $d){
+            $listeDepartement[] = $d['id'];
+        }
+
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreeModification.twig', ['departements' => $departements['departements'],'entree'=> $entree['entree'],'csrf'=> $token]);
+        return $view->render($response, 'VueGetEntreeModification.twig', ['departements' => $departements['departements'],'entree'=> $entree['entree'], 'listeDepartement'=> $listeDepartement,'id'=> $id['id'],'csrf'=> $token]);
     }
 
 }

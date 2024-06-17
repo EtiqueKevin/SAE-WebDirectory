@@ -36,8 +36,9 @@ class PostEntreeGestionModificationRedirection extends AbstractAction{
             }
 
             $data = $request->getParsedBody();
+            var_dump($data);
 
-            return $response->withHeader('Location', '/entrees')->withStatus(302);
+            return $response->withHeader('Location', '/entree/modification?id='.$data['id'])->withStatus(302);
     }
 
 }

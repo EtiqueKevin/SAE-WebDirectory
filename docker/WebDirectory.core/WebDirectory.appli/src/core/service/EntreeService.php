@@ -238,10 +238,119 @@ class   EntreeService implements IEntreeService{
 
     public function updateEntree(array $data){
 
+        // Vérification si les données sont existantes
+        if(!isset($data['id']) || !isset($data['nom']) || !isset($data['prenom']) || !isset($data['nbBureau']) || !isset($data['tel_mobile']) || !isset($data['tel_fixe']) || !isset($data['email']) || !isset($data['departements'])){
+            throw new OrmException("Données manquantes");
+        }
+
+        // Vérification si les données sont valides
+        if(!filter_var($data['nom'], FILTER_SANITIZE_SPECIAL_CHARS)){
+            throw new OrmException("Nom non valide");
+        }
+
+        if(!filter_var($data['prenom'], FILTER_SANITIZE_SPECIAL_CHARS)){
+            throw new OrmException("Prenom non valide");
+        }
+
+        if(!filter_var($data['nbBureau'], FILTER_SANITIZE_NUMBER_INT)){
+            throw new OrmException("Numéro de bureau non valide");
+        }
+
+        if(!filter_var($data['tel_mobile'], FILTER_SANITIZE_SPECIAL_CHARS)){
+            throw new OrmException("Numéro de téléphone mobile non valide");
+        }
+
+        if (!filter_var($data['tel_fixe'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+            throw new OrmException("Numéro de téléphone fixe non valide");
+        }
+
+        if (!filter_var($data['email'], FILTER_SANITIZE_EMAIL)) {
+            throw new OrmException("Email non valide");
+        }
+
+        //vérification que l'utilisateur n'existe pas déjà
+        $entree = Entrees::where('email', $data['email'])->first();
+
+        if ($entree != null && $entree->id != $data['id']) {
+            throw new OrmException("L'utilisateur existe déjà");
+        }
+
+        $fileNameNew = null;
+
+        if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
+            echo 'No files uploaded';
+        }else {
+            $file = $_FILES['image'];
+            $fileName = $file['name'];
+            $fileTmpName = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $fileError = $file['error'];
+            $fileType = $file['type'];
+
+            var_dump($fileType);
+
+            $allowed = array('image/jpg', 'image/jpeg', 'image/png');
+
+            if (in_array($fileType, $allowed)) {
+
+                //générer un nom unique pour l'image
+                $fileNameNew = uniqid('', true) . "." . explode("/", $fileType)[1];
+                $fileDestination = './img/' . $fileNameNew;
+                move_uploaded_file($fileTmpName, $fileDestination);
+            } else {
+                throw new OrmException("type de d'image non valide");
+            }
+
+        }
+
+        // Mise à jour de l'entree
+        try {
+            $entree = Entrees::find($data['id']);
+            $entree->nom = $data['nom'];
+            $entree->prenom = $data['prenom'];
+            $entree->nbureau = $data['nbBureau'];
+            $entree->tel_mobile = $data['tel_mobile'];
+            $entree->tel_fixe = $data['tel_fixe'];
+            $entree->email = $data['email'];
+            $entree->image = $fileNameNew;
+            $entree->save();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la mise à jour de l'entree");
+        }
+
+        // Suppression des departements de l'entree
+        try {
+            $entree->entrees2departement()->detach();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la suppression des departements de l'entree");
+        }
+
+        // Ajout de l'entree au departement
+        try {
+            $tabDepartement = $data['departements'];
+            foreach ($tabDepartement as $d){
+                $entree->entrees2departement()->attach($d);
+            }
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de l'ajout de l'entree au departement");
+        }
 
     }
 
-    public function deleteEntree(int $id){
+    public function deleteEntree(array $data){
+
+            $entree = Entrees::find($data['id']);
+
+            if ($entree == null) {
+                throw new OrmException("L'entree n'existe pas");
+            }
+
+            // Suppression de l'entree
+            try {
+                $entree->delete();
+            }catch (\Exception $e){
+                throw new OrmException("Erreur lors de la suppression de l'entree");
+            }
 
     }
 }
