@@ -7,19 +7,19 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `entrees`;
 CREATE TABLE `entrees` (
-                           `id` int(11) NOT NULL AUTO_INCREMENT,
-                           `nom` varchar(128) NOT NULL,
-                           `prenom` varchar(128) DEFAULT NULL,
-                           `nbureau` int(4) DEFAULT NULL,
-                           `tel_mobile` varchar(12) DEFAULT NULL,
-                           `tel_fixe` varchar(12) DEFAULT NULL,
-                           `email` varchar(128) DEFAULT NULL,
-                           `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                           `updated_at` timestamp NULL DEFAULT NULL,
-                           `publie` boolean DEFAULT FALSE,
-                           `image` varchar(255) DEFAULT NULL,
-                           `adresse` varchar(255) DEFAULT NULL,
-                           PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(128) NOT NULL,
+  `prenom` varchar(128) DEFAULT NULL,
+  `nbureau` int(4) DEFAULT NULL,
+  `tel_mobile` varchar(12) DEFAULT NULL,
+  `tel_fixe` varchar(12) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `publie` boolean DEFAULT FALSE,
+  `image` varchar(255) DEFAULT NULL,
+  `adresse` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS departement;
