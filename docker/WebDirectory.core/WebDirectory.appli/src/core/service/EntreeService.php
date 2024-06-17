@@ -13,8 +13,14 @@ class   EntreeService implements IEntreeService{
         $tab = [];
         foreach ($entrees as $e){
 
-            //récupération des departements de l'entree
-            $departement = $e->entrees2departement()->first();
+            $departement = $e->entrees2departement()->get();
+            $tabDepartement = [];
+            foreach ($departement as $d){
+                $tabDepartement[] = [
+                    'id' => $d->id,
+                    'nom' => $d->nom,
+                ];
+            }
 
             $tab[] = [
                 'entree' => [
@@ -27,7 +33,7 @@ class   EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
-                    'departement' => $departement->nom,
+                    'departements' => $tabDepartement,
                     'publie' => $e->publie,
                 ],
                 'links' => [
@@ -51,6 +57,15 @@ class   EntreeService implements IEntreeService{
         if ($entree == null){
             throw new OrmException("Entree non trouvée");
         }
+
+        $departement = $entree->entrees2departement()->get();
+        $tabDepartement = [];
+        foreach ($departement as $d){
+            $tabDepartement[] = [
+                'id' => $d->id,
+                'nom' => $d->nom,
+            ];
+        }
         return [
             'type' => 'resource',
             'entree' => [
@@ -64,6 +79,7 @@ class   EntreeService implements IEntreeService{
                 'created_at' => $entree->created_at,
                 'updated_at' => $entree->updated_at,
                 'publie' => $entree->publie,
+                'departements' => $tabDepartement,
             ],
         ];
     }
@@ -81,6 +97,9 @@ class   EntreeService implements IEntreeService{
 
         $tab = [];
         foreach ($entrees as $e){
+
+            $departement = $e->entrees2departement()->get();
+
             $tab[] = [
                 'entree' => [
                     'id' => $e->id,
@@ -92,7 +111,7 @@ class   EntreeService implements IEntreeService{
                     'email' => $e->email,
                     'created_at' => $e->created_at,
                     'updated_at' => $e->updated_at,
-                    'departement' => $departement->nom,
+                    'departements' => $departement,
                     'publie' => $e->publie,
                 ],
                 'links' => [
@@ -110,7 +129,7 @@ class   EntreeService implements IEntreeService{
     public function createEntree(array $data){
 
         // Vérification si les données sont existantes
-        if(!isset($data['nom']) || !isset($data['prenom']) || !isset($data['nbBureau']) || !isset($data['tel_mobile']) || !isset($data['tel_fixe']) || !isset($data['email']) || !isset($data['departement_id'])){
+        if(!isset($data['nom']) || !isset($data['prenom']) || !isset($data['nbBureau']) || !isset($data['tel_mobile']) || !isset($data['tel_fixe']) || !isset($data['email']) || !isset($data['departements'])){
             throw new OrmException("Données manquantes");
         }
 
@@ -139,10 +158,6 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
-        if (!filter_var($data['departement_id'], FILTER_SANITIZE_NUMBER_INT)) {
-            throw new OrmException("Id departement non valide");
-        }
-
         //vérification que l'utilisateur n'existe pas déjà
         $entree = Entrees::where('email', $data['email'])->first();
 
@@ -152,7 +167,7 @@ class   EntreeService implements IEntreeService{
 
         $fileNameNew = null;
 
-        if (!isset($_FILES['image'])) {
+        if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
             echo 'No files uploaded';
         }else {
             $file = $_FILES['image'];
@@ -195,7 +210,10 @@ class   EntreeService implements IEntreeService{
 
         // Ajout de l'entree au departement
         try {
-            $entree->entrees2departement()->attach($data['departement_id']);
+            $tabDepartement = $data['departements'];
+            foreach ($tabDepartement as $d){
+                $entree->entrees2departement()->attach($d);
+            }
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de l'ajout de l'entree au departement");
         }
@@ -216,5 +234,14 @@ class   EntreeService implements IEntreeService{
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de la publication de l'entree");
         }
+    }
+
+    public function updateEntree(array $data){
+
+
+    }
+
+    public function deleteEntree(int $id){
+
     }
 }

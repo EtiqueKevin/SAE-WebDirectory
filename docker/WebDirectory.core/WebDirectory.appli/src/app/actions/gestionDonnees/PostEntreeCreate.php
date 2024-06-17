@@ -24,15 +24,11 @@ class PostEntreeCreate extends AbstractAction{
     public function __invoke(Request $request, Response $response, array $args): Response{
 
         $args = $request->getParsedBody();
-
-        var_dump($args);
         try {
             CsrfService::check($args['csrf']);
         }catch (CsrfException $e) {
             throw new HttpBadRequestException($request,'csrf token error');
         }
-
-
 
         try {
             $this->entreeService->createEntree($args);

@@ -5,10 +5,10 @@
 
         <form action="/entree/create" method="post" id="form-new-entree" enctype="multipart/form-data">
 
-            <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
-            <div><label for="prenom"></label><input type="text" id="prenom" name="prenom" placeholder="Prenom"></div>
-            <div><label for="nbBureau"></label><input type="text" id="nbBureau" name="nbBureau" placeholder="Numéro Bureau"></div>
-            <div><label for="tel_mobile"></label><input type="tel" id="tel_mobile" name="tel_mobile" placeholder="Numéro téléphone mobile"></div>
+            <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom" value="{{entree.nom}}"></div>
+            <div><label for="prenom"></label><input type="text" id="prenom" name="prenom" placeholder="Prenom" value="{{entree.prenom}}"></div>
+            <div><label for="nbBureau"></label><input type="text" id="nbBureau" name="nbBureau" placeholder="Numéro Bureau" value="{{entree.num_bureau}}"></div>
+            <div><label for="tel_mobile"></label><input type="tel" id="tel_mobile" name="tel_mobile" placeholder="Numéro téléphone mobile" value="{{entree.}}"></div>
             <div><label for="tel_fixe"></label><input type="tel" id="tel_fixe" name="tel_fixe" placeholder="Numéro téléphone fixe"></div>
             <div><label for="email"></label><input type="email" id="email" name="email" placeholder="Email"></div>
             <br>
@@ -17,7 +17,6 @@
                 {% for d in departements %}
                     <div>
                         <label>
-
                             <input type="checkbox" name="departements[]" value="{{ d.departement.id }}">
                             {{ d.departement.nom }}
                         </label>

@@ -14,4 +14,8 @@ interface IEntreeService{
 
     public function publicationEntre(array $data);
 
+    public function updateEntree(array $data);
+
+    public function deleteEntree(int $id);
+
 }
