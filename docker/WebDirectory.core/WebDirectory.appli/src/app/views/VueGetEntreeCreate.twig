@@ -1,8 +1,8 @@
 {% extends "Index.twig" %}
 
 {% block content %}
-    <div id="home">
-
+    <div id="card">
+        <h1 class="titre">Création d'une entrée</h1>
         <form action="/entree/create" method="post" id="form-new-entree" enctype="multipart/form-data">
 
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
@@ -27,7 +27,7 @@
             </div>
             <div><label for="image"></label><input type="file" id="image" name="image" placeholder="Image" accept="image/jpeg, image/png, image/gif, image/jpg"></div>
             <input type="hidden" name="csrf" value="{{ csrf }}">
-            <button  type="submit">Create</button>
+            <button  type="submit">Créer</button>
         </form>
     </div>
 {% endblock %}

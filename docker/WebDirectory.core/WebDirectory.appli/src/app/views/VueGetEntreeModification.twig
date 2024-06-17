@@ -1,8 +1,8 @@
 {% extends "Index.twig" %}
 
 {% block content %}
-    <div id="home">
-
+    <div id="card">
+        <h1 class="titre">Modification d'une entrée</h1>
         <form action="/entree/modification" method="post" id="form-modification-entree" enctype="multipart/form-data">
 
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom" value="{{entree.nom}}"></div>

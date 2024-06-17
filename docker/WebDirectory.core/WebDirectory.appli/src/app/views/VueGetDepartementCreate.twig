@@ -1,15 +1,15 @@
 {% extends "Index.twig" %}
 
 {% block content %}
-    <div id="home">
-
+    <div id="card">
+        <h1 class="titre">Création d'un département</h1>
         <form action="/departement/create" method="post" id="form-new-departement">
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom"></div>
             <div><label for="etage"></label><input type="number" id="etage" name="etage" placeholder="Étage"></div>
             <div><label for="description"></label><textarea id="description" name="description" placeholder="Description"></textarea></div>
             <input type="hidden" name="csrf" value="{{ csrf }}">
             <br>
-            <button  type="submit">Create</button>
+            <button  type="submit">Créer</button>
         </form>
     </div>
 {% endblock %}
