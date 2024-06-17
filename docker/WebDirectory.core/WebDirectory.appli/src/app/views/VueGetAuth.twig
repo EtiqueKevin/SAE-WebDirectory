@@ -1,0 +1,13 @@
+{% extends "Index.twig" %}
+
+{% block content %}
+    <div>
+        <p class="titre">Authentification</p>
+        <form action="/auth/" method="post" id="form-auth">
+            <div><label for="email"></label><input type="email" id="email" name="email" placeholder="email"></div>
+            <div><label for="password"></label><input type="password" id="password" name="password" placeholder="password"></div>
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <button  type="submit">Authentification</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "Index.twig" %}
+
+{% block content %}
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Departements</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in entrees %}
+            <tr>
+                <td>{{ e.entree.nom }}</td>
+                <td>{{ e.entree.prenom }}</td>
+                <td>
+                        {% for d in e.entree.departements %}
+                           {{ d.nom }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                </td>
+                <td>
+                    <form method="post" action="{{ url_for('gestionPublication', {'id': e.entree.id}) }}">
+                        {% if e.entree.publie == 0 %}
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Publier</button>
+                         {% else %}
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Dépublier</button>
+                        {% endif %}
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="{{ url_for('supprimerEntree', {'id': e.entree.id}) }}">
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Supprimer</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="{{ url_for('modificationEntreeRedirection', {'id': e.entree.id}) }}">
+                        <button type="submit" name="id" value="{{ e.entree.id }}">Modifier</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,21 @@
+#header {
+  background-color: #f8f9fa;
+  padding: 20px;
+  //centre
+    display: flex;
+
+
+
+  .title {
+    font-size: 24px;
+    color: #343a40;
+    margin: 0;
+  }
+}
+
+
+#menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

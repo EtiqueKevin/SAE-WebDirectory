@@ -14,6 +14,9 @@ CREATE TABLE `entrees` (
   `tel_mobile` varchar(12) DEFAULT NULL,
   `tel_fixe` varchar(12) DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
+  `publie` boolean DEFAULT FALSE,
+  `image` varchar(255) DEFAULT NULL,
+  `adresse` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -21,14 +24,25 @@ CREATE TABLE `entrees` (
 
 DROP TABLE IF EXISTS departement;
 CREATE TABLE departement (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `nom` varchar(128) NOT NULL,
-    PRIMARY KEY (`id`)
+                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                             `nom` varchar(128) NOT NULL,
+                             `etage` int(2) NOT NULL,
+                             `description` varchar(255) DEFAULT NULL,
+                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `entrees2departement`;
 CREATE TABLE entrees2departement (
-    `id_entrees` int(11) NOT NULL,
-    `id_departement` int(11) NOT NULL,
-    PRIMARY KEY (`id_departement`, `id_entrees`)
+                                     `id_entrees` int(11) NOT NULL,
+                                     `id_departement` int(11) NOT NULL,
+                                     PRIMARY KEY (`id_departement`, `id_entrees`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS utilisateur;
+CREATE TABLE utilisateur (
+                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                             `email` varchar(128) NOT NULL,
+                             `password`  varchar(128) NOT NULL,
+                             `role` varchar(128) NOT NULL,
+                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
