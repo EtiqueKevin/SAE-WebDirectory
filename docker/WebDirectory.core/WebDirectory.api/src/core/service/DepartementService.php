@@ -50,6 +50,8 @@ class DepartementService implements IDepartementService{
             'departement' => [
                 'id' => $departement->id,
                 'nom' => $departement->nom,
+                'etage' => $departement->etage,
+                'description' => $departement->description,
             ],
         ];
     }
