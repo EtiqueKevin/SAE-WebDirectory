@@ -29,12 +29,12 @@
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="{{ url_for('supprimerEntree', {'id': e.entree.id}) }}">
+                    <form method="post" action="{{ url_for('gestionSuppression', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Supprimer</button>
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="{{ url_for('modificationEntreeRedirection', {'id': e.entree.id}) }}">
+                    <form method="post" action="{{ url_for('postEntreeModificationRedirection', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Modifier</button>
                     </form>
                 </td>

@@ -16,6 +16,6 @@ interface IEntreeService{
 
     public function updateEntree(array $data);
 
-    public function deleteEntree(int $id);
+    public function deleteEntree(array $data);
 
 }

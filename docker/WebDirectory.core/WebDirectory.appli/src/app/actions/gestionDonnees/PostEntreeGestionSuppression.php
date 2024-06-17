@@ -3,9 +3,11 @@
 namespace WebDirectory\appli\app\actions\gestionDonnees;
 
 use Slim\Exception\HttpBadRequestException;
+use Slim\Views\Twig;
 use WebDirectory\appli\app\actions\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use WebDirectory\appli\core\service\DepartementService;
 use WebDirectory\appli\core\service\EntreeService;
 use WebDirectory\appli\core\service\IDepartementService;
 use WebDirectory\appli\core\service\IEntreeService;
@@ -13,7 +15,7 @@ use WebDirectory\appli\core\service\IUtilisateurService;
 use WebDirectory\appli\core\service\OrmException;
 use WebDirectory\appli\core\service\UtilisateurService;
 
-class PostEntreeGestionModificationRedirection extends AbstractAction{
+class PostEntreeGestionSuppression extends AbstractAction{
 
     private IEntreeService $entreeService;
     private IUtilisateurService $userService;
@@ -36,9 +38,14 @@ class PostEntreeGestionModificationRedirection extends AbstractAction{
             }
 
             $data = $request->getParsedBody();
-            var_dump($data);
 
-            return $response->withHeader('Location', '/entree/modification?id='.$data['id'])->withStatus(302);
+            try {
+                $this->entreeService->deleteEntree($data);
+            } catch (OrmException $e) {
+                throw new HttpBadRequestException($request, $e->getMessage());
+            }
+
+            return $response->withHeader('Location', '/entrees')->withStatus(302);
     }
 
 }

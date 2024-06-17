@@ -13,9 +13,13 @@ use WebDirectory\appli\app\actions\authentification\PostAuth;
 use WebDirectory\appli\app\actions\authentification\PostRegister;
 use WebDirectory\appli\app\actions\gestionDonnees\GetDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeCreate;
+use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeGestionModification;
 use WebDirectory\appli\app\actions\gestionDonnees\PostDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeCreate;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModification;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModificationRedirection;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionPublication;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionSuppression;
 
 return function( \Slim\App $app): \Slim\App {
 
@@ -61,6 +65,16 @@ return function( \Slim\App $app): \Slim\App {
     })->setName('logout');
 
     $app->post('/entrees/gestionPublication[/]',PostEntreeGestionPublication::class )->setName('gestionPublication');
+
+    $app->get('/entree/modification[/]', GetEntreeGestionModification::class )->setName('getEntreeGestionModification');
+
+    $app->post('/entree/modification[/]', PostEntreeGestionModification::class )->setName('postEntreeGestionModification');
+
+    $app->post('/entree/suppression[/]', PostEntreeGestionSuppression::class )->setName('gestionSuppression');
+
+    $app->post('/entreeModificationRedirection', PostEntreeGestionModificationRedirection::class)->setName('postEntreeModificationRedirection');
+
+
 
     return $app;
 
