@@ -40,11 +40,11 @@ class EntreeService implements IEntreeService{
         }
         if ($sort === "asc"){
             usort($tab, function($a, $b){
-                return $a['entree']['nom'] <=> $b['entree']['nom'];
+                return $a['entree']['nom'] . $a['entree']['prenom'] <=> $b['entree']['nom'] . $b['entree']['prenom'];
             });
         } else {
             usort($tab, function($a, $b){
-                return $b['entree']['nom'] <=> $a['entree']['nom'];
+                return $b['entree']['nom'] . $b['entree']['prenom'] <=> $a['entree']['nom'] . $a['entree']['prenom'];
             });
         }
         return [
@@ -139,11 +139,11 @@ class EntreeService implements IEntreeService{
         }
         if ($sort === "asc"){
             usort($tab, function($a, $b){
-                return $a['entree']['nom'] <=> $b['entree']['nom'];
+                return $a['entree']['nom'] . $a['entree']['prenom'] <=> $b['entree']['nom'] . $b['entree']['prenom'];
             });
         } else {
             usort($tab, function($a, $b){
-                return $b['entree']['nom'] <=> $a['entree']['nom'];
+                return $b['entree']['nom'] . $b['entree']['prenom'] <=> $a['entree']['nom'] . $a['entree']['prenom'];
             });
         }
         return [
@@ -157,7 +157,7 @@ class EntreeService implements IEntreeService{
     {
         $search = '%'.$search.'%';
         $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
-        $entrees = Entrees::where('nom', 'like', $search)->get();
+        $entrees = Entrees::where('nom', 'like', $search)->orWhere('prenom', 'like', $search)->get();
         $tab = [];
         foreach ($entrees as $e){
             $dep = $e->entrees2departement()->get();
@@ -193,11 +193,11 @@ class EntreeService implements IEntreeService{
         }
         if ($sort === "asc"){
             usort($tab, function($a, $b){
-                return $a['entree']['nom'] <=> $b['entree']['nom'];
+                return $a['entree']['nom'] . $a['entree']['prenom'] <=> $b['entree']['nom'] . $b['entree']['prenom'];
             });
         } else {
             usort($tab, function($a, $b){
-                return $b['entree']['nom'] <=> $a['entree']['nom'];
+                return $b['entree']['nom'] . $b['entree']['prenom'] <=> $a['entree']['nom'] . $a['entree']['prenom'];
             });
         }
         return [
@@ -212,9 +212,8 @@ class EntreeService implements IEntreeService{
      */
     public function getEntreesSorted(string $sort = "nom-asc"): array
     {
-        if ($sort === 'nom-asc' || $sort === 'nom-desc') {
-            $sort = explode('-', $sort);
-        $entrees = Entrees::orderBy('nom', $sort[1])->get();
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
+        $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
             $dep = $e->entrees2departement()->get();
@@ -248,14 +247,20 @@ class EntreeService implements IEntreeService{
                 ],
             ];
         }
+        if ($sort === "asc"){
+            usort($tab, function($a, $b){
+                return $a['entree']['nom'] . $a['entree']['prenom'] <=> $b['entree']['nom'] . $b['entree']['prenom'];
+            });
+        } else {
+            usort($tab, function($a, $b){
+                return $b['entree']['nom'] . $b['entree']['prenom'] <=> $a['entree']['nom'] . $a['entree']['prenom'];
+            });
+        }
         return [
             'type' => 'collection',
             'count' => count($tab),
             'entrees' => $tab
         ];
-        } else {
-            throw new OrmException("Tri non supporté");
-        }
     }
 
     public function getEntreesByDepartementAndSearchSorted(int $id, string $search, string $sort): array
@@ -265,13 +270,11 @@ class EntreeService implements IEntreeService{
             throw new OrmException("Departement non trouvé");
         }
         $search = '%'.$search.'%';
-        if ($sort === 'nom-asc' || $sort === 'nom-desc') {
-            $sort = explode('-', $sort);
-            $sort = $sort[1];
-        } else {
-            $sort = "asc";
-        }
-        $entrees = $departement->entrees2departement()->where('nom', 'like', $search)->orderBy('nom', $sort)->get();
+        $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
+        $entrees = $departement->entrees2departement()
+            ->where('nom', 'like', $search)
+            ->orWhere('prenom', 'like', $search)
+            ->get();
         $tab = [];
         foreach ($entrees as $e){
             $dep = $e->entrees2departement()->get();
@@ -304,6 +307,15 @@ class EntreeService implements IEntreeService{
                     'self' => ['href' => '/api/entrees/'.$e->id]
                 ],
             ];
+        }
+        if ($sort === "asc"){
+            usort($tab, function($a, $b){
+                return $a['entree']['nom'] . $a['entree']['prenom'] <=> $b['entree']['nom'] . $b['entree']['prenom'];
+            });
+        } else {
+            usort($tab, function($a, $b){
+                return $b['entree']['nom'] . $b['entree']['prenom'] <=> $a['entree']['nom'] . $a['entree']['prenom'];
+            });
         }
         return [
             'type' => 'collection',
