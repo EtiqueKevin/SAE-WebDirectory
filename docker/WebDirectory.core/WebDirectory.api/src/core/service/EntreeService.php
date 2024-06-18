@@ -169,7 +169,7 @@ class EntreeService implements IEntreeService{
     {
         $search = '%'.$search.'%';
         $sort = $sort === 'nom-desc' ? 'desc' : 'asc';
-        $entrees = Entrees::where('nom', 'like', $search)->orWhere('prenom', 'like', $search)->get();
+        $entrees = Entrees::where('nom', 'like', $search)->orWhere('prenom', 'like', $search)->groupBy('nom', 'prenom')->get();
         $tab = [];
         foreach ($entrees as $e) {
             if ($e['publie'] === 1) {
@@ -296,6 +296,7 @@ class EntreeService implements IEntreeService{
         $entrees = $departement->entrees2departement()
             ->where('nom', 'like', $search)
             ->orWhere('prenom', 'like', $search)
+            ->groupBy('nom', 'prenom')
             ->get();
         $tab = [];
         foreach ($entrees as $e) {
