@@ -35,6 +35,7 @@ class   EntreeService implements IEntreeService{
                     'updated_at' => $e->updated_at,
                     'departements' => $tabDepartement,
                     'publie' => $e->publie,
+                    'adresse' => $e->adresse,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -80,6 +81,7 @@ class   EntreeService implements IEntreeService{
                 'updated_at' => $entree->updated_at,
                 'publie' => $entree->publie,
                 'departements' => $tabDepartement,
+                'adresse' => $entree->adresse,
             ],
         ];
     }
@@ -113,6 +115,7 @@ class   EntreeService implements IEntreeService{
                     'updated_at' => $e->updated_at,
                     'departements' => $departement,
                     'publie' => $e->publie,
+                    'adresse' => $e->adresse,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -158,6 +161,10 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
+        if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+            throw new OrmException("Adresse non valide");
+        }
+
         //vérification que l'utilisateur n'existe pas déjà
         $entree = Entrees::where('email', $data['email'])->first();
 
@@ -168,7 +175,7 @@ class   EntreeService implements IEntreeService{
         $fileNameNew = null;
 
         if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
-            echo 'No files uploaded';
+            //echo 'No files uploaded';
         }else {
             $file = $_FILES['image'];
             $fileName = $file['name'];
@@ -176,8 +183,6 @@ class   EntreeService implements IEntreeService{
             $fileSize = $file['size'];
             $fileError = $file['error'];
             $fileType = $file['type'];
-
-            var_dump($fileType);
 
             $allowed = array('image/jpg', 'image/jpeg', 'image/png');
 
@@ -203,6 +208,7 @@ class   EntreeService implements IEntreeService{
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
             $entree->image = $fileNameNew;
+            $entree->adresse = $data['adresse'];
             $entree->save();
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de la création de l'entree");
@@ -268,6 +274,17 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
+        $ad = $data['adresse'];
+
+        if($data['adresse'] != null || $data['adresse'] != ""){
+            if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+                throw new OrmException("Adresse non valide");
+            }
+        }else{
+            $ad = "";
+        }
+
+
         //vérification que l'utilisateur n'existe pas déjà
         $entree = Entrees::where('email', $data['email'])->first();
 
@@ -278,7 +295,7 @@ class   EntreeService implements IEntreeService{
         $fileNameNew = null;
 
         if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
-            echo 'No files uploaded';
+            //echo 'No files uploaded';
         }else {
             $file = $_FILES['image'];
             $fileName = $file['name'];
@@ -286,8 +303,6 @@ class   EntreeService implements IEntreeService{
             $fileSize = $file['size'];
             $fileError = $file['error'];
             $fileType = $file['type'];
-
-            var_dump($fileType);
 
             $allowed = array('image/jpg', 'image/jpeg', 'image/png');
 
@@ -312,6 +327,7 @@ class   EntreeService implements IEntreeService{
             $entree->tel_mobile = $data['tel_mobile'];
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
+            $entree->adresse = $data['adresse'];
             $entree->image = $fileNameNew;
             $entree->save();
         }catch (\Exception $e){
