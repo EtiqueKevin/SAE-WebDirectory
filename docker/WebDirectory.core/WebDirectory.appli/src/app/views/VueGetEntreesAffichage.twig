@@ -1,6 +1,12 @@
 {% extends "Index.twig" %}
 
 {% block content %}
+
+    <div>
+        <h4 class="titre">Liste des entrées</h4>
+        <form method="post" action="{{ url_for('postEntreeExportCSV') }}"><button type="submit">Export CSV</button></form>
+        <form method="post" action="{{ url_for('postEntreeExportPDF') }}"><button type="submit">Export PDF</button></form>
+    </div>
     <table>
         <thead>
         <tr>

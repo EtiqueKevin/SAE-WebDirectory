@@ -18,4 +18,8 @@ interface IEntreeService{
 
     public function deleteEntree(array $data);
 
+    public function exportCSV();
+
+    public function exportPDF();
+
 }

@@ -2,6 +2,7 @@
 
 namespace WebDirectory\appli\core\service;
 
+use mPDF;
 use WebDirectory\appli\core\domain\entities\Departement;
 use WebDirectory\appli\core\domain\entities\Entrees;
 
@@ -368,5 +369,77 @@ class   EntreeService implements IEntreeService{
                 throw new OrmException("Erreur lors de la suppression de l'entree");
             }
 
+    }
+
+    public function exportCSV(){
+
+//prends toutes les entrées, et renvoie un fichier CSV  et le fichier est téléchargé
+        $entrees = Entrees::all();
+        $file = fopen("entrees.csv", "w");
+        fputcsv($file, ['id', 'nom', 'prenom', 'num_bureau', 'tel_mobile', 'tel_fixe', 'email', 'created_at', 'updated_at', 'publie', 'adresse']);
+        foreach ($entrees as $e){
+            fputcsv($file, [$e->id, $e->nom, $e->prenom, $e->nbureau, $e->tel_mobile, $e->tel_fixe, $e->email, $e->created_at, $e->updated_at, $e->publie, $e->adresse]);
+        }
+        fclose($file);
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="entrees.csv"');
+        readfile("entrees.csv");
+        exit();
+    }
+
+    public function exportPDF(){
+        // Create a new instance of the TCPDF class
+        $pdf = new \TCPDF();
+
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('Entrees Export');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+        // Set default header data
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+
+        // Set header and footer fonts
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // Set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // Set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        // Add a page
+        $pdf->AddPage();
+
+        // Fetch all entries
+        $entrees = Entrees::all();
+
+        // Start the HTML string
+        $html = '<table><tr><th>ID</th><th>Nom</th><th>Prenom</th><th>Num Bureau</th><th>Tel Mobile</th><th>Tel Fixe</th><th>Email</th><th>Created At</th><th>Updated At</th><th>Publie</th><th>Adresse</th></tr>';
+
+        // Loop through all entries and add them to the HTML string
+        foreach ($entrees as $e){
+            $html .= '<tr><td>'.$e->id.'</td><td>'.$e->nom.'</td><td>'.$e->prenom.'</td><td>'.$e->nbureau.'</td><td>'.$e->tel_mobile.'</td><td>'.$e->tel_fixe.'</td><td>'.$e->email.'</td><td>'.$e->created_at.'</td><td>'.$e->updated_at.'</td><td>'.$e->publie.'</td><td>'.$e->adresse.'</td></tr>';
+        }
+
+        // End the HTML string
+        $html .= '</table>';
+
+        // Write the HTML string to the PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Output the PDF as a downloadable file
+        $pdf->Output('entrees.pdf', 'D');
     }
 }

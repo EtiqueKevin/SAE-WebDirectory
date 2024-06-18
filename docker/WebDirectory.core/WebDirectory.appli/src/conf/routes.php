@@ -16,6 +16,8 @@ use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeGestionModification;
 use WebDirectory\appli\app\actions\gestionDonnees\PostDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeCreate;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeExportCSV;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeExportPDF;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModification;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModificationRedirection;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionPublication;
@@ -72,9 +74,11 @@ return function( \Slim\App $app): \Slim\App {
 
     $app->post('/entree/suppression[/]', PostEntreeGestionSuppression::class )->setName('gestionSuppression');
 
-    $app->post('/entreeModificationRedirection', PostEntreeGestionModificationRedirection::class)->setName('postEntreeModificationRedirection');
+    $app->post('/entreeModificationRedirection[/]', PostEntreeGestionModificationRedirection::class)->setName('postEntreeModificationRedirection');
 
+    $app->post('/entree/exportCSV[/]', PostEntreeExportCSV::class)->setName('postEntreeExportCSV');
 
+    $app->post('/entree/exportPDF[/]', PostEntreeExportPDF::class)->setName('postEntreeExportPDF');
 
     return $app;
 
