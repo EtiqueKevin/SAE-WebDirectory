@@ -8,6 +8,7 @@ class Entree {
   String? numeroPerso;
   String email;
   List<Departement> departements;
+  String? imageURI;
 
   Entree({
     required this.nom,
@@ -16,19 +17,21 @@ class Entree {
     this.numeroFixe,
     this.numeroPerso,
     required this.email,
-    required this.departements
+    required this.departements,
+    this.imageURI
   });
 
   factory Entree.fromJson(Map<String, dynamic> json) {
  
     return Entree(
-      nom: json['nom'],
-      prenom: json['prenom'],
-      numBureau: json['num_bureau'],
-      numeroFixe: json['tel_fixe'],
-      numeroPerso: json['tel_mobile'],
-      email: json['email'],
-      departements: json['departements'].map<Departement>((dep) => Departement.fromJson(dep['departement'])).toList()
+      nom: json['entree']['nom'],
+      prenom: json['entree']['prenom'],
+      numBureau: json['entree']['num_bureau'],
+      numeroFixe: json['entree']['tel_fixe'],
+      numeroPerso: json['entree']['tel_mobile'],
+      email: json['entree']['email'],
+      departements: json['entree']['departements'].map<Departement>((dep) => Departement.fromJson(dep['departement'])).toList(),
+      imageURI: json['links']['image']['href']
     );
   }
 }

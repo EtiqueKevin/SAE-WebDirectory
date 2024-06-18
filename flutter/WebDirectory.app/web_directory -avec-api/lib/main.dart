@@ -28,10 +28,12 @@ class MainApp extends StatelessWidget {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(
         brightness: Brightness.light,
-        seedColor: Colors.green,
-        surface: Colors.green,
-        primary: Colors.green,
+        seedColor: const Color.fromARGB(255, 62, 143, 64),
+        surface: const Color.fromARGB(255, 227, 250, 228),
+        primary: const Color.fromARGB(255, 62, 143, 64),
         onPrimary: Colors.white,
+        secondary: const Color.fromARGB(255, 235, 255, 226),
+        tertiary: Colors.black,
       ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(
@@ -39,8 +41,13 @@ class MainApp extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),  
         titleMedium: TextStyle(
-          color: Colors.green,
-        )
+          color:Color.fromARGB(255, 62, 143, 64),
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -49,16 +56,29 @@ class MainApp extends StatelessWidget {
 
   ThemeData themeSombre() {
     return ThemeData(
+      scaffoldBackgroundColor: const Color.fromARGB(255, 36, 36, 34),
       colorScheme: ColorScheme.fromSeed(
-        surface: Colors.green,
         brightness: Brightness.dark,
-        seedColor: Colors.green,
+        seedColor:const Color.fromARGB(255, 255, 255, 255),
+        surface: const Color.fromARGB(255, 105, 122, 105),
+        primary: const Color.fromARGB(255, 62, 143, 64),
+        onPrimary: Colors.white,
+        secondary: const Color.fromARGB(255, 44, 44, 42),
+        tertiary: Colors.white,
       ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),  
+        titleMedium: TextStyle(
+          color:Color.fromARGB(255, 255, 255, 255),
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -73,7 +93,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text('Annuaire des contacts', style : Theme.of(context).textTheme.titleLarge),
       ),
       body: Center(
@@ -83,7 +103,7 @@ class Home extends StatelessWidget {
             if (snapshot.hasData) {
               return const EntreeMaster();
             }else if(snapshot.hasError){
-              return Text('Error: ${snapshot.error}');
+              return const Text('impossible de charger les données');
             }
             else {
               return const CircularProgressIndicator();
