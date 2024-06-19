@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:web_directory/provider/entree_provider.dart';
 
 import 'screen/entree_master.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: "assets/.env");
   runApp(ChangeNotifierProvider(
       create: (BuildContext context) => EntreeProvider(),
       child: const MainApp()

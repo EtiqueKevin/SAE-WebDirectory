@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_directory/models/departement.dart';
@@ -19,6 +21,7 @@ class _EntreeMasterState extends State<EntreeMaster> {
   bool _ascendant = false;
   String? _selectedValue = 'Tous';
   bool _grid = false;
+  Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +121,10 @@ class _EntreeMasterState extends State<EntreeMaster> {
                     ),
                   ),
                   onChanged: (text) => {
-                    Provider.of<EntreeProvider>(context, listen: false).fetchEntreesFilterSort(_selectedValue, _ascendant, text),
+                    _timer?.cancel(),
+                    _timer = Timer(const Duration(milliseconds: 300), () async {
+                      await Provider.of<EntreeProvider>(context, listen: false).fetchEntreesFilterSort(_selectedValue, _ascendant, _controller.text);
+                    })
                   },
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/entree.dart';
@@ -24,15 +25,16 @@ class EntreePreviewList extends StatelessWidget {
               ),
             );
           },
-          leading: entree.imageURI == null 
-          ? CircleAvatar(
+          leading: CircleAvatar(
             radius: 20,
-            backgroundImage: const AssetImage("assets/images/default_pp.png"),
+            backgroundImage: entree.imageURI == null 
+            ? const AssetImage("assets/images/default_pp.png")
+            : FadeInImage.assetNetwork(
+              placeholder: "assets/images/default_pp.png",
+              image: dotenv.env['IMG_URL']! + entree.imageURI!,
+              fit: BoxFit.cover,
+            ).image,
             backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          )
-          : CircleAvatar(
-            radius: 20,
-            backgroundImage: NetworkImage("http://docketu.iutnc.univ-lorraine.fr:43000/img/${entree.imageURI!}"),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,

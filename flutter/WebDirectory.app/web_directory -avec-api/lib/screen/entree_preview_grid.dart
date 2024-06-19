@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_directory/screen/entree_details.dart';
 
@@ -29,15 +30,16 @@ class EntreePreviewGrid extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              entree.imageURI == null
-              ? CircleAvatar(
+              CircleAvatar(
                 radius: 20,
-                backgroundImage: const AssetImage("assets/images/default_pp.png"),
+                backgroundImage: entree.imageURI == null || dotenv.env['IMG_URL'] == null
+                ? const AssetImage("assets/images/default_pp.png")
+                : FadeInImage.assetNetwork(
+                  placeholder: "assets/images/default_pp.png",
+                  image: dotenv.env['IMG_URL']! + entree.imageURI!,
+                  fit: BoxFit.cover,
+                ).image,
                 backgroundColor: Theme.of(context).colorScheme.onPrimary,
-              )
-              : CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage("http://docketu.iutnc.univ-lorraine.fr:43000/img/${entree.imageURI!}"),
               ),
               Text('${entree.nom} ${entree.prenom}', style: Theme.of(context).textTheme.titleMedium, overflow: TextOverflow.ellipsis,),
               Text(listeDep, style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,),
