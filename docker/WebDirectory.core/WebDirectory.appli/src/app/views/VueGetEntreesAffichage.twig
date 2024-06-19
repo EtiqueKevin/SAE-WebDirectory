@@ -2,10 +2,18 @@
 
 {% block content %}
 
-    <div>
-        <h4 class="titre">Liste des entrées</h4>
-        <form method="post" action="{{ url_for('postEntreeExportCSV') }}"><button type="submit">Export CSV</button></form>
-        <form method="post" action="{{ url_for('postEntreeExportPDF') }}"><button type="submit">Export PDF</button></form>
+    <div id="export-import-forms">
+            <form method="POST" action="{{ url_for('postEntreeExport') }}">
+                <select name="format" id="format">
+                    <option value="PDF" selected>PDF</option>
+                    <option value="CSV">CSV</option>
+                </select>
+                <button type="submit" id="submit" name="submit">Export</button>
+            </form>
+            <form method="post" action="{{ url_for('postEntreeImportCSV') }}" enctype="multipart/form-data">
+                <input type="file" name="file" id="file">
+                <button type="submit">Import CSV</button>
+            </form>
     </div>
     <table>
         <thead>

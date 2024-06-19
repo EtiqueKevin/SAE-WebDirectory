@@ -362,7 +362,6 @@ class   EntreeService implements IEntreeService{
                 throw new OrmException("L'entree n'existe pas");
             }
 
-            // Suppression de l'entree
             try {
                 $entree->delete();
             }catch (\Exception $e){
@@ -373,7 +372,6 @@ class   EntreeService implements IEntreeService{
 
     public function exportCSV(){
 
-//prends toutes les entrées, et renvoie un fichier CSV  et le fichier est téléchargé
         $entrees = Entrees::all();
         $file = fopen("entrees.csv", "w");
         fputcsv($file, ['id', 'nom', 'prenom', 'num_bureau', 'tel_mobile', 'tel_fixe', 'email', 'created_at', 'updated_at', 'publie', 'adresse']);
@@ -391,13 +389,10 @@ class   EntreeService implements IEntreeService{
         $pdf = new \TCPDF();
 
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Your Name');
+        $pdf->SetAuthor('Webdirectory');
         $pdf->SetTitle('Entrees Export');
-        $pdf->SetSubject('TCPDF Tutorial');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
-
+        $pdf->SetHeaderData('icon64.jpg', 15, '      Annuaire WebDirectory');
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
@@ -415,16 +410,103 @@ class   EntreeService implements IEntreeService{
 
         $entrees = Entrees::all();
 
-        $html = '<table><tr><th>ID</th><th>Nom</th><th>Prenom</th><th>Num Bureau</th><th>Tel Mobile</th><th>Tel Fixe</th><th>Email</th><th>Created At</th><th>Updated At</th><th>Publie</th><th>Adresse</th></tr>';
+        $html = '
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    text-align: center;
+                    border: 1px solid black;
+                    padding: 10px;
+                }
+                .bureau {
+                    width: 75px;
+                }
+            .email{
+                   width: 150px;
+            }
+                tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+            </style>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th class="bureau">Bureau</th>
+                    <th>Tel Mobile</th>
+                    <th>Tel Fixe</th>
+                    <th class="email">Email</th>
+                </tr>';
 
-        foreach ($entrees as $e){
-            $html .= '<tr><td>'.$e->id.'</td><td>'.$e->nom.'</td><td>'.$e->prenom.'</td><td>'.$e->nbureau.'</td><td>'.$e->tel_mobile.'</td><td>'.$e->tel_fixe.'</td><td>'.$e->email.'</td><td>'.$e->created_at.'</td><td>'.$e->updated_at.'</td><td>'.$e->publie.'</td><td>'.$e->adresse.'</td></tr>';
-        }
+                    foreach ($entrees as $e){
+                        $html .= '<tr>
+                    <td>'.$e->nom.'</td>
+                    <td>'.$e->prenom.'</td>
+                    <td class="bureau">'.$e->nbureau.'</td>
+                    <td>'.$e->tel_mobile.'</td>
+                    <td>'.$e->tel_fixe.'</td>
+                    <td class="email">'.$e->email.'</td>
+                </tr>';
+                    }
 
         $html .= '</table>';
+
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
         $pdf->Output('entrees.pdf', 'D');
+    }
+
+    public function importCSV(){
+
+       $file = fopen($_FILES['file']['tmp_name'], 'r');
+
+       fgetcsv($file);
+
+        while (($data = fgetcsv($file)) !== FALSE) {
+
+            $data = array_map(function($field) {
+                if (is_string($field)) {
+                    return filter_var($field, FILTER_SANITIZE_SPECIAL_CHARS);
+                } elseif (is_int($field)) {
+                    return filter_var($field, FILTER_SANITIZE_NUMBER_INT);
+                } elseif (is_float($field)) {
+                    return filter_var($field, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                } else {
+                    return $field;
+                }
+            }, $data);
+
+            $entree = Entrees::where('email', $data[5])->first();
+            if ($entree != null) {
+                continue;
+            }
+
+            $entree = new Entrees();
+
+            $entree->nom = $data[0];
+            $entree->prenom = $data[1];
+            $entree->nbureau = $data[2];
+            $entree->tel_mobile = $data[3];
+            $entree->tel_fixe = $data[4];
+            $entree->email = $data[5];
+            $entree->publie = $data[6];
+            $entree->adresse = $data[7];
+            $entree->save();
+
+            $departements = explode(",", $data[8]);
+            foreach ($departements as $d){
+                $departement = Departement::where('nom', $d)->first();
+                if ($departement != null){
+                    $entree->entrees2departement()->attach($departement->id);
+                }
+            }
+        }
+
+        fclose($file);
+
     }
 }

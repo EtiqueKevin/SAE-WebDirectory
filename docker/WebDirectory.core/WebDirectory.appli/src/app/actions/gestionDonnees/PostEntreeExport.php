@@ -15,7 +15,7 @@ use WebDirectory\appli\core\service\IUtilisateurService;
 use WebDirectory\appli\core\service\OrmException;
 use WebDirectory\appli\core\service\UtilisateurService;
 
-class PostEntreeExportCSV extends AbstractAction{
+class PostEntreeExport extends AbstractAction{
 
     private IEntreeService $entreeService;
     private IUtilisateurService $userService;
@@ -28,6 +28,8 @@ class PostEntreeExportCSV extends AbstractAction{
 
     public function __invoke(Request $request, Response $response, array $args): Response{
 
+        $body = $request->getParsedBody();
+
         if (!isset($_SESSION['user'])) {
             throw new HttpBadRequestException($request, "Vous devez être connecté pour accéder à cette page");
         }
@@ -38,7 +40,13 @@ class PostEntreeExportCSV extends AbstractAction{
         }
 
         try {
-            $this->entreeService->exportCSV();
+            if($body['format'] == 'CSV'){
+                $this->entreeService->exportCSV();
+            }elseif($body['format'] == 'PDF'){
+                $this->entreeService->exportPDF();
+            }else{
+                throw new HttpBadRequestException($request, "Format de fichier non supporté");
+            }
         } catch (OrmException $e) {
             throw new HttpBadRequestException($request, $e->getMessage());
         }

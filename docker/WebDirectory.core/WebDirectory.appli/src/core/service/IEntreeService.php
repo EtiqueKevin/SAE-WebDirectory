@@ -22,4 +22,6 @@ interface IEntreeService{
 
     public function exportPDF();
 
+    public function importCSV();
+
 }

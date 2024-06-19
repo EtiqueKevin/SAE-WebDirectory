@@ -16,12 +16,14 @@ use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\GetEntreeGestionModification;
 use WebDirectory\appli\app\actions\gestionDonnees\PostDepartementCreate;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeCreate;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeExport;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeExportCSV;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeExportPDF;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModification;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionModificationRedirection;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionPublication;
 use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeGestionSuppression;
+use WebDirectory\appli\app\actions\gestionDonnees\PostEntreeImportCSV;
 
 return function( \Slim\App $app): \Slim\App {
 
@@ -76,9 +78,9 @@ return function( \Slim\App $app): \Slim\App {
 
     $app->post('/entreeModificationRedirection[/]', PostEntreeGestionModificationRedirection::class)->setName('postEntreeModificationRedirection');
 
-    $app->post('/entree/exportCSV[/]', PostEntreeExportCSV::class)->setName('postEntreeExportCSV');
+    $app->post('/entree/export[/]', PostEntreeExport::class)->setName('postEntreeExport');
 
-    $app->post('/entree/exportPDF[/]', PostEntreeExportPDF::class)->setName('postEntreeExportPDF');
+    $app->post('/entree/importCSV[/]', PostEntreeImportCSV::class)->setName('postEntreeImportCSV');
 
     return $app;
 
