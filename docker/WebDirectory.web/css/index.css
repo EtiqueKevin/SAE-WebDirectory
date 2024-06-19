@@ -8,6 +8,8 @@
     --link-color: blue;
     --link-hover-color: darkblue; 
 
+    --form-color : #05b705;
+    --form-hover-color : #007900;
     --error-color: red;
 }
 
@@ -33,17 +35,29 @@ html, body {
     color : var(--text-color);
     background-color: var(--bg-color);
 }
-
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
+#annuaire{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 .error {
     color: var(--error-color);
     font-size: 2rem;
     margin: 20px;
+}
+#title-logo {
+    display: flex;
+    align-items: center;
+}
+#logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 
@@ -51,7 +65,7 @@ main {
 .modal {
     display: none;
     position: fixed; 
-    z-index: 1;
+    z-index: 50;
     left: 0;
     top: 0;
     width: 100%; 
@@ -60,19 +74,30 @@ main {
     background-color: var(--modal-bg-color);
 }
 .modal-content {
+    position: relative;
     background-color: var(--modal-content-bg-color);
     margin: 9% auto;
     padding: 20px;
     border: 1px solid var(--modal-content-border-color);
     width : clamp(200px, 50%, 500px);
 }
+#close-button {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 36px;
+    margin-left: 50px;
+    cursor: pointer;
+}
 
 /* Form */
 #filterForm {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     color: var(--text-color);
+    gap: 5px;
     padding: 10px; 
     border-radius: 4px; 
 }
@@ -80,7 +105,7 @@ main {
 #filterForm #nameFilter,
 #filterForm #departmentFilter,
 #filterForm #sortFilter {
-    flex: 1;
+    flex: 1 0 auto;
     margin-right: 10px;
     padding: 5px;
     border: 1px solid #ced4da;
@@ -88,31 +113,38 @@ main {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
-
-#filterForm #formButton {
+#filterForm .formButton {
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: var(--form-color);
     color: white;
     cursor: pointer;
 }
-
-#filterForm #formButton:hover {
-    background-color: #0056b3;
+#filterForm .formButton:hover {
+    background-color: var(--form-hover-color);
+}
+#theme-toggle-button{
+    accent-color: var(--form-color);
+}
+select:hover{
+    cursor: pointer;
 }
 
 /* Header */
-header {
+#nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     height: clamp(50px, 5%, 100px);
     border-bottom: 1px solid #dee2e6;
+    background-color: var(--bg-color);
 }
-
-header h1 {
+#nav-header h1 {
     margin: 0;
     color: var(--text-color);
 }
@@ -120,11 +152,11 @@ header h1 {
 /* Card */
 .cardContainer {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fill,  minmax(280px, 1fr));
     gap: 20px;
     padding: 20px;
+    width: 100%;
 }
-
 .entreeListe {
     background-color: var(--modal-content-bg-color);
     border: 1px solid var(--modal-content-border-color);
@@ -134,31 +166,61 @@ header h1 {
     text-align: center;
     transition: all 0.3s ease;
 }
-
 .entreeListe:hover {
+    cursor: pointer;
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 /* Links */
 a {
-    color: var(--link-color);
+    color: var(--form-color);
+}
+a:hover {
+    color: var(--form-hover-color);
 }
 
-a:hover {
-    color: var(--link-hover-color);
+/* Détail */
+#detail-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    gap: 20px;
+}
+.round-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    float: left;
+}
+.departement {
+    color: var(--form-color);
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 @media (max-width: 900px) {
+    #detail-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .modal-content {
+        width: 70%;
+    }
+
     .cardContainer {
         grid-template-columns: repeat(2, 1fr);
     }
-    header {
+    #nav-header {
         flex-direction: column;
         height: auto;
     }
 
-    header h1, header div {
+    #nav-header h1, #nav-header div {
         order: -1;
     }
 }

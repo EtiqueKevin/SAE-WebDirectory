@@ -6,7 +6,7 @@ export const annuaireTemplate = `
             <h2>{{entree.nom}} {{entree.prenom}}</h2> 
             <p>
                 {{#each entree.departements}}
-                    {{this.departement.nom}},
+                    {{this.departement.nom}}{{#if @last}}{{else}},{{/if}}
                 {{/each}}
             </p>
         </div>
@@ -19,7 +19,7 @@ export const annuaireTemplate = `
 
 export const formTemplate = `
 <form id="filterForm">
-    <input type="text" id="nameFilter" value="" placeholder="Nom">
+    <input type="text" id="nameFilter" value="" placeholder="Nom/Prénom">
     <select id="departmentFilter">
         <option value="">Tous les départements</option>
         {{#each departements}}
@@ -30,26 +30,46 @@ export const formTemplate = `
         <option value="nom-asc" selected>Nom (A-Z)</option>
         <option value="nom-desc">Nom (Z-A)</option>
     </select>
-    <button id="formButton">Filtrer</button>
+    <button id="downloadButton" class="formButton">Exporter CSV</button>
 </form>
 `;
 
 export const entreeDetailTemplate = `
 <div class="modal-content">
-    <header>
-      <h1>{{nom}} {{prenom}}</h1>
+    <span id="close-button">&times;</span>
+    <header id="detail-header">
+      {{#if links.image.href}}
+        <img src="{{apiUrl}}/img/{{links.image.href}}" class="round-image" alt="Profile Picture"/>
+      {{else}}
+        <img src="/public/no-image.png" class="round-image" alt="No Image Available"/>
+      {{/if}}
+      <h1>{{entree.nom}} {{entree.prenom}}</h1>
     </header>
     <article>
       <h2>Departements : </h2>
       <ul>
-        {{#each departements}}
-          <li>{{this.departement.nom}}</li>
+        {{#each entree.departements}}
+          <li class="departement" id="{{this.departement.id}}">{{this.departement.nom}}</li>
         {{/each}}
       </ul>
-      <p>Numéro de bureau : {{num_bureau}}</p>
-      <p>Téléphone mobile: {{tel_mobile}}</p>
-      <p>Téléphone fixe: {{tel_fixe}}</p>
-      <p>Email: <a href="mailto:{{email}}">{{email}}</a></p>
+      <p>Adresse : {{entree.adresse}}</p>
+      <p>Numéro de bureau : {{entree.num_bureau}}</p>
+      <p>Téléphone mobile: {{entree.tel_mobile}}</p>
+      <p>Téléphone fixe: {{entree.tel_fixe}}</p>
+      <p>Email: <a href="mailto:{{entree.email}}">{{entree.email}}</a></p>
     </article>
-  </div>
+</div>
+`;
+
+export const departementDetailTemplate = `
+<div class="modal-content">
+    <span id="close-button">&times;</span>
+    <header id="detail-header">
+      <h1>{{departement.nom}}</h1>
+    </header>
+    <article>
+      <p>Etage : {{departement.etage}}</p>
+      <p>Description : {{departement.description}}</p>
+    </article>
+</div>
 `;

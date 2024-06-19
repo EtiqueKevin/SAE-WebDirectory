@@ -1,4 +1,4 @@
-import { loadData } from "./loader";
+import { loadData } from "./loader.js";
 
 let  entries = [];
 
@@ -9,6 +9,10 @@ async function getEntries(url) {
 
 async function getEntry(url) {
     return await loadData(url);
+}
+
+function getStoredEntries() {
+    return entries;
 }
 
 async function search(depId, name, sort) {
@@ -26,4 +30,4 @@ async function search(depId, name, sort) {
     return await getEntries(url);
 }
 
-export { getEntries, search, getEntry };
+export { getEntries, search, getEntry, getStoredEntries };

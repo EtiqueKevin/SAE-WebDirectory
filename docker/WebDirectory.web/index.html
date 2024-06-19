@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>WebDirectory</title>
-  <link rel="stylesheet" href="css/index.css">
-</head>
-<body>
-<!-- Header -->
-<header>
-  <h1>WebDirectory</h1>
-  <!-- Navigation -->
-  <nav id="head">
-  </nav>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebDirectory</title>
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  <body>
+    <!-- Header -->
+    <header id="nav-header">
+      <div id="title-logo">
+        <img src="public/favicon.ico" alt="logo" id="logo">
+        <h1>WebDirectory</h1>
+      </div>
+      
+      <!-- Navigation -->
+      <nav id="head-form">
+      </nav>
 
-  <div>
-    <input type="checkbox" id="theme-toggle-button">
-    <label for="myCheckbox">Dark Theme</label>
-  </div>
-</header>
+      <div>
+        <input type="checkbox" id="theme-toggle-button">
+        <label for="myCheckbox">Thème Sombre</label>
+      </div>
+    </header>
 
-<main>
-  <!-- Annuaire -->
-  <section id="annuaire"></section>
-</main>
+    <main>
+      <!-- Annuaire -->
+      <section id="annuaire"></section>
+    </main>
 
-<!-- Modal -->
-<div id="myModal" class="modal">
-</div>
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+    </div>
 
-<script  src='out.js' defer ></script>
-</body>
+    <script src='out.js' defer></script>
+  </body>
 </html>
