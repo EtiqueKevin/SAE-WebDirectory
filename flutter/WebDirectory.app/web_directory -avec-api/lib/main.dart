@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:web_directory/provider/entree_provider.dart';
+import 'package:web_directory/screen/entree_maps.dart';
 
 import 'screen/entree_master.dart';
 
@@ -86,10 +87,21 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({
     super.key,
   });
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+  final List<Widget> _pages = [
+    const EntreeMaster(),
+    const EntreeMaps(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +114,8 @@ class Home extends StatelessWidget {
         child: FutureBuilder(
           future: Provider.of<EntreeProvider>(context, listen: false).fetchEntrees(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return const EntreeMaster();
+            if (snapshot.hasData){
+              return _pages[_currentIndex];
             }else if(snapshot.hasError){
               return const Text('impossible de charger les données');
             }
@@ -112,6 +124,27 @@ class Home extends StatelessWidget {
             }
           },
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color.fromARGB(255, 153, 153, 153),
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items : const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: "Maps",
+          ),
+        ],
       ),
     );
   }

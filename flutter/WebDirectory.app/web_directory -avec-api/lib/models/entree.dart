@@ -1,3 +1,4 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:web_directory/models/departement.dart';
 
 class Entree {
@@ -9,6 +10,8 @@ class Entree {
   String email;
   List<Departement> departements;
   String? imageURI;
+  String? adresse;
+  Location? location;
 
   Entree({
     required this.nom,
@@ -18,8 +21,20 @@ class Entree {
     this.numeroPerso,
     required this.email,
     required this.departements,
-    this.imageURI
+    this.imageURI,
+    this.adresse,
   });
+
+
+  Future<void> fetchLocation() async {
+    if (adresse == null) return;
+    try {
+      List<Location> coord = await locationFromAddress(adresse!);
+      location = coord.first;
+    } catch (e) {
+      location = null;
+    }
+  }
 
   factory Entree.fromJson(Map<String, dynamic> json) {
  
@@ -31,7 +46,8 @@ class Entree {
       numeroPerso: json['entree']['tel_mobile'],
       email: json['entree']['email'],
       departements: json['entree']['departements'].map<Departement>((dep) => Departement.fromJson(dep['departement'])).toList(),
-      imageURI: json['links']['image']['href']
+      imageURI: json['links']['image']['href'],
+      adresse: json['entree']['adresse'],
     );
   }
 }

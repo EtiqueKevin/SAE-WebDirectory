@@ -15,7 +15,6 @@ class EntreeProvider extends ChangeNotifier {
   List<Departement> get departements => _departements;
 
   Future<List<Entree>> fetchEntrees() async {
-
     try{
       Response response = await dio.get('http://docketu.iutnc.univ-lorraine.fr:43000/api/entrees');
       _entrees = await Future.wait(response.data['entrees'].map<Future<Entree>>((entree) async {
