@@ -1,5 +1,6 @@
 # SAE-WebDirectory
-Membre du groupe: 
+
+## Membre du groupe: 
 
 - ETIQUE Kévin
 - NETANGE Clément
