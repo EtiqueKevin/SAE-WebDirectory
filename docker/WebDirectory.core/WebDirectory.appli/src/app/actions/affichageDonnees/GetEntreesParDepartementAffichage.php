@@ -40,7 +40,7 @@ class GetEntreesParDepartementAffichage extends AbstractAction{
         }
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreesParDepartementAffichage.twig', ['entrees' => $entrees['entrees'], 'departements' => $departements['departements'], 'selected' => $id['id'] ?? null]);
+        return $view->render($response, 'VueGetEntreesParDepartementAffichage.twig', ['entrees' => $entrees['entrees'], 'departements' => $departements['departements'], 'selected' => $id['id'] ?? null, 'connecte'=> isset($_SESSION['user'])]);
     }
 
 }

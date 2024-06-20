@@ -2,13 +2,13 @@
 
 namespace WebDirectory\appli\core\service;
 
+use mPDF;
 use WebDirectory\appli\core\domain\entities\Departement;
 use WebDirectory\appli\core\domain\entities\Entrees;
 
 class   EntreeService implements IEntreeService{
 
-    public function getEntrees(): array
-    {
+    public function getEntrees(): array{
         $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
@@ -35,6 +35,7 @@ class   EntreeService implements IEntreeService{
                     'updated_at' => $e->updated_at,
                     'departements' => $tabDepartement,
                     'publie' => $e->publie,
+                    'adresse' => $e->adresse,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -80,6 +81,7 @@ class   EntreeService implements IEntreeService{
                 'updated_at' => $entree->updated_at,
                 'publie' => $entree->publie,
                 'departements' => $tabDepartement,
+                'adresse' => $entree->adresse,
             ],
         ];
     }
@@ -113,6 +115,7 @@ class   EntreeService implements IEntreeService{
                     'updated_at' => $e->updated_at,
                     'departements' => $departement,
                     'publie' => $e->publie,
+                    'adresse' => $e->adresse,
                 ],
                 'links' => [
                     'self' => ['href' => '/entrees/'.$e->id]
@@ -158,6 +161,17 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
+
+        $ad = $data['adresse'];
+
+        if($data['adresse'] != null || $data['adresse'] != ""){
+            if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+                throw new OrmException("Adresse non valide");
+            }
+        }else{
+            $ad = "";
+        }
+
         //vérification que l'utilisateur n'existe pas déjà
         $entree = Entrees::where('email', $data['email'])->first();
 
@@ -168,7 +182,7 @@ class   EntreeService implements IEntreeService{
         $fileNameNew = null;
 
         if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
-            echo 'No files uploaded';
+            //echo 'No files uploaded';
         }else {
             $file = $_FILES['image'];
             $fileName = $file['name'];
@@ -176,8 +190,6 @@ class   EntreeService implements IEntreeService{
             $fileSize = $file['size'];
             $fileError = $file['error'];
             $fileType = $file['type'];
-
-            var_dump($fileType);
 
             $allowed = array('image/jpg', 'image/jpeg', 'image/png');
 
@@ -202,7 +214,9 @@ class   EntreeService implements IEntreeService{
             $entree->tel_mobile = $data['tel_mobile'];
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
+            $entree->publie = 1;
             $entree->image = $fileNameNew;
+            $entree->adresse = $data['adresse'];
             $entree->save();
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de la création de l'entree");
@@ -268,6 +282,17 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
+        $ad = $data['adresse'];
+
+        if($data['adresse'] != null || $data['adresse'] != ""){
+            if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+                throw new OrmException("Adresse non valide");
+            }
+        }else{
+            $ad = "";
+        }
+
+
         //vérification que l'utilisateur n'existe pas déjà
         $entree = Entrees::where('email', $data['email'])->first();
 
@@ -278,7 +303,7 @@ class   EntreeService implements IEntreeService{
         $fileNameNew = null;
 
         if (!isset($_FILES['image'])  || $_FILES['image']['size'] == 0 || $_FILES['image']['type'] == "") {
-            echo 'No files uploaded';
+            //echo 'No files uploaded';
         }else {
             $file = $_FILES['image'];
             $fileName = $file['name'];
@@ -286,8 +311,6 @@ class   EntreeService implements IEntreeService{
             $fileSize = $file['size'];
             $fileError = $file['error'];
             $fileType = $file['type'];
-
-            var_dump($fileType);
 
             $allowed = array('image/jpg', 'image/jpeg', 'image/png');
 
@@ -312,6 +335,7 @@ class   EntreeService implements IEntreeService{
             $entree->tel_mobile = $data['tel_mobile'];
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
+            $entree->adresse = $data['adresse'];
             $entree->image = $fileNameNew;
             $entree->save();
         }catch (\Exception $e){
@@ -345,12 +369,151 @@ class   EntreeService implements IEntreeService{
                 throw new OrmException("L'entree n'existe pas");
             }
 
-            // Suppression de l'entree
             try {
                 $entree->delete();
             }catch (\Exception $e){
                 throw new OrmException("Erreur lors de la suppression de l'entree");
             }
+
+    }
+
+    public function exportCSV(){
+
+        $entrees = Entrees::all();
+        $file = fopen("entrees.csv", "w");
+        fputcsv($file, ['id', 'nom', 'prenom', 'num_bureau', 'tel_mobile', 'tel_fixe', 'email', 'created_at', 'updated_at', 'publie', 'adresse']);
+        foreach ($entrees as $e){
+            fputcsv($file, [$e->id, $e->nom, $e->prenom, $e->nbureau, $e->tel_mobile, $e->tel_fixe, $e->email, $e->created_at, $e->updated_at, $e->publie, $e->adresse]);
+        }
+        fclose($file);
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="entrees.csv"');
+        readfile("entrees.csv");
+        exit();
+    }
+
+    public function exportPDF(){
+        $pdf = new \TCPDF();
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Webdirectory');
+        $pdf->SetTitle('Entrees Export');
+
+        $pdf->SetHeaderData('icon64.jpg', 15, '      Annuaire WebDirectory');
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        $pdf->AddPage();
+
+        $entrees = Entrees::all();
+
+        $html = '
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    text-align: center;
+                    border: 1px solid black;
+                    padding: 10px;
+                }
+                .bureau {
+                    width: 75px;
+                }
+            .email{
+                   width: 150px;
+            }
+                tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+            </style>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th class="bureau">Bureau</th>
+                    <th>Tel Mobile</th>
+                    <th>Tel Fixe</th>
+                    <th class="email">Email</th>
+                </tr>';
+
+                    foreach ($entrees as $e){
+                        $html .= '<tr>
+                    <td>'.$e->nom.'</td>
+                    <td>'.$e->prenom.'</td>
+                    <td class="bureau">'.$e->nbureau.'</td>
+                    <td>'.$e->tel_mobile.'</td>
+                    <td>'.$e->tel_fixe.'</td>
+                    <td class="email">'.$e->email.'</td>
+                </tr>';
+                    }
+
+        $html .= '</table>';
+
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        $pdf->Output('entrees.pdf', 'D');
+    }
+
+    public function importCSV(){
+
+       $file = fopen($_FILES['file']['tmp_name'], 'r');
+
+       fgetcsv($file);
+
+        while (($data = fgetcsv($file)) !== FALSE) {
+
+            $data = array_map(function($field) {
+                if (is_string($field)) {
+                    return filter_var($field, FILTER_SANITIZE_SPECIAL_CHARS);
+                } elseif (is_int($field)) {
+                    return filter_var($field, FILTER_SANITIZE_NUMBER_INT);
+                } elseif (is_float($field)) {
+                    return filter_var($field, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                } else {
+                    return $field;
+                }
+            }, $data);
+
+            $entree = Entrees::where('email', $data[5])->first();
+            if ($entree != null) {
+                continue;
+            }
+
+            $entree = new Entrees();
+
+            $entree->nom = $data[0];
+            $entree->prenom = $data[1];
+            $entree->nbureau = $data[2];
+            $entree->tel_mobile = $data[3];
+            $entree->tel_fixe = $data[4];
+            $entree->email = $data[5];
+            $entree->publie = $data[6];
+            $entree->adresse = $data[7];
+            $entree->save();
+
+            $departements = explode(",", $data[8]);
+            foreach ($departements as $d){
+                $departement = Departement::where('nom', $d)->first();
+                if ($departement != null){
+                    $entree->entrees2departement()->attach($departement->id);
+                }
+            }
+        }
+
+        fclose($file);
 
     }
 }

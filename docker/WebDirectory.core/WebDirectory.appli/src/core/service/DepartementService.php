@@ -43,6 +43,8 @@ class DepartementService implements IDepartementService{
             'departement' => [
                 'id' => $departement->id,
                 'nom' => $departement->nom,
+                'etage' => $departement->etage,
+                'description' => $departement->description,
             ],
         ];
     }
@@ -53,7 +55,6 @@ class DepartementService implements IDepartementService{
             throw new OrmException("Les champs nom, etage et description sont obligatoires");
         }
 
-        //sanitize
         if(!filter_var($args['nom'], FILTER_SANITIZE_SPECIAL_CHARS) || !filter_var($args['description'], FILTER_SANITIZE_SPECIAL_CHARS)){
             throw new OrmException("Les champs nom et description sont non valides");
         }
@@ -61,8 +62,6 @@ class DepartementService implements IDepartementService{
         if (!filter_var($args['etage'], FILTER_VALIDATE_INT)){
             throw new OrmException("Le champ etage doit être un entier");
         }
-
-        //vérfie si le departement existe déjà
 
         $departement = Departement::where('nom', $args['nom'])->first();
 
@@ -79,6 +78,56 @@ class DepartementService implements IDepartementService{
         }catch (\Exception $e){
             throw new OrmException("Erreur lors de la création du departement");
         }
+
+    }
+
+    public function updateDepartement(array $args): void{
+
+        if(!isset($args['id']) || !isset($args['nom']) || !isset($args['etage']) || !isset($args['description'])){
+            throw new OrmException("Les champs id, nom, etage et description sont obligatoires");
+        }
+
+        if(!filter_var($args['nom'], FILTER_SANITIZE_SPECIAL_CHARS) || !filter_var($args['description'], FILTER_SANITIZE_SPECIAL_CHARS)){
+            throw new OrmException("Les champs nom et description sont non valides");
+        }
+
+        if (!filter_var($args['etage'], FILTER_VALIDATE_INT)){
+            throw new OrmException("Le champ etage doit être un entier");
+        }
+
+        $departement = Departement::find($args['id']);
+        if(!$departement){
+            throw new OrmException("Le departement n'existe pas");
+        }
+
+        try {
+            $departement->nom = $args['nom'];
+            $departement->etage = $args['etage'];
+            $departement->description = $args['description'];
+            $departement->save();
+        }catch (\Exception $e){
+            throw new OrmException("Erreur lors de la mise à jour du departement");
+        }
+
+    }
+
+    public function deleteDepartement(string $id): void{
+
+            $departement = Departement::find($id);
+            if(!$departement){
+                throw new OrmException("Le departement n'existe pas");
+            }
+
+            $entreesCount = $departement->entrees2departement()->count();
+
+            if($entreesCount != null){
+                throw new OrmException("Le departement contient des entrees, vous ne pouvez pas le supprimer");
+            }
+            try {
+                $departement->delete();
+            }catch (\Exception $e){
+                throw new OrmException("Erreur lors de la suppression du departement");
+            }
 
     }
 }

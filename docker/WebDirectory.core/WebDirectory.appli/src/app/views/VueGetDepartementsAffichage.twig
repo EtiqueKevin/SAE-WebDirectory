@@ -1,0 +1,46 @@
+{% extends "Index.twig" %}
+
+{% block auth %}
+
+    {% if connecte %}
+
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+
+    {% else %}
+
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+
+    {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Etage</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in departements %}
+            <tr>
+                <td>{{ d.departement.nom }}</td>
+                <td>{{ d.departement.etage }}</td>
+                <td class="buttons-table">
+                    <form method="post" action="{{ url_for('gestionSuppressionDepartement', {'id': d.departement.id}) }}">
+                        <button type="submit" name="id" value="{{ d.departement.id }}">Supprimer</button>
+                    </form>
+                    <form method="post" action="{{ url_for('postDepartementModificationRedirection', {'id': d.departement.id}) }}">
+                        <button type="submit" name="id" value="{{ d.departement.id }}">Modifier</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

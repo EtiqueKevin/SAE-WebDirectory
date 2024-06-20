@@ -1,19 +1,33 @@
 {% extends "Index.twig" %}
 
+{% block auth %}
+
+    {% if connecte %}
+
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+
+    {% else %}
+
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+
+    {% endif %}
+
+{% endblock %}
+
+
 {% block content %}
 
-    <div>
+    <div id="header">
         <h1>Entrees par departement</h1>
-        <div>
-            <form action="/entreesParDepartement" method="post">
-                <label for="departement">Departement</label>
-                <select id="id" name="id">
-                    {% for d in departements %}
-                        <option value="{{ d.departement.id }} " {% if selected == d.departement.id  %}  selected {% endif %}>{{ d.departement.nom }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Rechercher</button>
-            </form>
+        <form action="/entreesParDepartement" method="post" id="departement-form">
+            <select id="id" name="id">
+                {% for d in departements %}
+                    <option value="{{ d.departement.id }} " {% if selected == d.departement.id  %}  selected {% endif %}>{{ d.departement.nom }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Rechercher</button>
+        </form>
     </div>
 
     <table>
@@ -22,6 +36,7 @@
             <th>Nom</th>
             <th>Prenom</th>
             <th>Departement</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -34,21 +49,17 @@
                         {{ d.nom }} {% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
-                <td>
+                <td class="buttons-table">
                     <form method="post" action="{{ url_for('gestionPublication', {'id': e.entree.id}) }}">
                         {% if e.entree.publie == 0 %}
-                            <button type="submit" name="id" value="{{ e.entree.id }}">Publier</button>
+                            <button type="submit" name="id" id="publier" value="{{ e.entree.id }}">Publier</button>
                         {% else %}
-                            <button type="submit" name="id" value="{{ e.entree.id }}">Dépublier</button>
+                            <button type="submit" name="id" id="depublier" value="{{ e.entree.id }}">Dépublier</button>
                         {% endif %}
                     </form>
-                </td>
-                <td>
                     <form method="post" action="{{ url_for('gestionSuppression', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Supprimer</button>
                     </form>
-                </td>
-                <td>
                     <form method="post" action="{{ url_for('postEntreeModificationRedirection', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Modifier</button>
                     </form>

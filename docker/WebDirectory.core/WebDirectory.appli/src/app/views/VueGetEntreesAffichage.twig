@@ -1,12 +1,43 @@
 {% extends "Index.twig" %}
 
+{% block auth %}
+
+    {% if connecte %}
+
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+
+    {% else %}
+
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+
+    {% endif %}
+
+{% endblock %}
+
+
 {% block content %}
+
+    <div id="export-import-forms">
+            <form method="POST" action="{{ url_for('postEntreeExport') }}">
+                <select name="format" id="format">
+                    <option value="PDF" selected>PDF</option>
+                    <option value="CSV">CSV</option>
+                </select>
+                <button type="submit" id="submit" name="submit">Export</button>
+            </form>
+            <form method="post" action="{{ url_for('postEntreeImportCSV') }}" enctype="multipart/form-data">
+                <input type="file" name="file" id="file">
+                <button type="submit">Import CSV</button>
+            </form>
+    </div>
     <table>
         <thead>
         <tr>
             <th>Nom</th>
             <th>Prenom</th>
             <th>Departements</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -19,21 +50,17 @@
                            {{ d.nom }} {% if not loop.last %}, {% endif %}
                         {% endfor %}
                 </td>
-                <td>
+                <td class="buttons-table">
                     <form method="post" action="{{ url_for('gestionPublication', {'id': e.entree.id}) }}">
                         {% if e.entree.publie == 0 %}
-                        <button type="submit" name="id" value="{{ e.entree.id }}">Publier</button>
+                        <button type="submit" name="id" id="publier" value="{{ e.entree.id }}">Publier</button>
                          {% else %}
-                        <button type="submit" name="id" value="{{ e.entree.id }}">Dépublier</button>
+                        <button type="submit" name="id" id="depublier" value="{{ e.entree.id }}">Dépublier</button>
                         {% endif %}
                     </form>
-                </td>
-                <td>
                     <form method="post" action="{{ url_for('gestionSuppression', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Supprimer</button>
                     </form>
-                </td>
-                <td>
                     <form method="post" action="{{ url_for('postEntreeModificationRedirection', {'id': e.entree.id}) }}">
                         <button type="submit" name="id" value="{{ e.entree.id }}">Modifier</button>
                     </form>

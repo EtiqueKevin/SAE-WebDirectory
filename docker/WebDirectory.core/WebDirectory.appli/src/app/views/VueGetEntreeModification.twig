@@ -1,8 +1,24 @@
 {% extends "Index.twig" %}
 
-{% block content %}
-    <div id="home">
+{% block auth %}
 
+    {% if connecte %}
+
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+
+    {% else %}
+
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+
+    {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+    <div id="card">
+        <h1 class="titre">Modification d'une entrée</h1>
         <form action="/entree/modification" method="post" id="form-modification-entree" enctype="multipart/form-data">
 
             <div><label for="nom"></label><input type="text" id="nom" name="nom" placeholder="Nom" value="{{entree.nom}}"></div>
@@ -11,6 +27,7 @@
             <div><label for="tel_mobile"></label><input type="tel" id="tel_mobile" name="tel_mobile" placeholder="Numéro téléphone mobile" value="{{entree.tel_mobile}}"></div>
             <div><label for="tel_fixe"></label><input type="tel" id="tel_fixe" name="tel_fixe" placeholder="Numéro téléphone fixe" value="{{entree.tel_fixe}}"></div>
             <div><label for="email"></label><input type="email" id="email" name="email" placeholder="Email" value="{{entree.email}}"></div>
+            <div><label for="adresse"></label><input type="text" id="adresse" name="adresse" placeholder="Adresse" value="{{entree.adresse}}"></div>
             <input type="number" name="id" id="id" value="{{ id }}" style="display: none">
             <br>
             <!--<div><label for="departement_id"></label><input type="text" id="departement_id" name="departement_id" placeholder="Id du département"></div>-->

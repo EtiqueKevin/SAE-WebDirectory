@@ -33,6 +33,6 @@ class GetRegister extends AbstractAction{
         }
 
         $view =Twig::fromRequest($request);
-        return $view->render($response, 'VueGetRegister.twig', ['csrf'=> CsrfService::generate()]);
+        return $view->render($response, 'VueGetRegister.twig', ['csrf'=> CsrfService::generate(), 'connecte'=> isset($_SESSION['user'])]);
     }
 }

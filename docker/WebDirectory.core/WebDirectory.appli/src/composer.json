@@ -8,7 +8,8 @@
     "illuminate/database":"^11.0",
     "fakerphp/faker":"^1.20",
     "twig/twig": "^3.0",
-    "slim/twig-view": "^3.3.0"
+    "slim/twig-view": "^3.3.0",
+    "tecnickcom/tcpdf": "^6.7",
   },
   
   "autoload": {

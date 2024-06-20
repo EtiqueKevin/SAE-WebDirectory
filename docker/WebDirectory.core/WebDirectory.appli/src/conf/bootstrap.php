@@ -1,9 +1,11 @@
 <?php
 
+use Slim\Psr7\Request;
 use WebDirectory\appli\infrastructure\Eloquent;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use Slim\Psr7\Response as SlimResponse;
 
 session_start();
 
@@ -14,7 +16,22 @@ $app->add(TwigMiddleware::create($app, $twig));
 
 $app->addRoutingMiddleware();
 
-$app->addErrorMiddleware(true, false, false);
+$errorMiddleware = $app->addErrorMiddleware(true, false, false);
+
+$errorMiddleware->setDefaultErrorHandler(
+    function (Request $request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails) use ($twig) {
+        $statusCode = $exception->getCode();
+        $errorMessage = $exception->getMessage();
+
+        $response = new SlimResponse();
+
+        return $twig->render($response, 'Error.twig', [
+            'statusCode' => $statusCode,
+            'errorMessage' => $errorMessage,
+            'connecte' => isset($_SESSION['user'])
+        ]);
+    }
+);
 
 $app= (require_once __DIR__ . '/routes.php')($app);
 
