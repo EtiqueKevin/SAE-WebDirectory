@@ -28,6 +28,7 @@ $errorMiddleware->setDefaultErrorHandler(
         return $twig->render($response, 'Error.twig', [
             'statusCode' => $statusCode,
             'errorMessage' => $errorMessage,
+            'connecte' => isset($_SESSION['user'])
         ]);
     }
 );

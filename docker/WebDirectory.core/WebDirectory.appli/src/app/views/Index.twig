@@ -9,16 +9,16 @@
 <header id="header">
     <div id="title-logo">
         <img src="{{ base_path() }}/favicon.ico" alt="logo" id="logo">
-        <h1>WebDirectory</h1>
+        <h1> <a href="{{url_for('home', {},{})}}" style="text-decoration: none;color: inherit;" >WebDirectory</a></h1>
       </div>
     <nav id="nav-menu">
         <a href="{{url_for('getEntreesAffichage', {},{})}}"><p>ENTREES</p></a>
         <a href="{{url_for('getEntreesParDepartementAffichage', {},{})}}"><p>ENTREES PAR DEPARTEMENT</p></a>
         <a href="{{url_for('getEntreeCreate', {},{})}}"><p>CREER UNE ENTREE</p></a>
         <a href="{{url_for('getDepartementCreate', {},{})}}"><p>CREE UN DEPARTEMENT</p></a>
-        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
-        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
-        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+        {% block auth %}
+
+        {% endblock %}
     </nav>
 </header>
 <main id="main">

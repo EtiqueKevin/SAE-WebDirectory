@@ -8,8 +8,7 @@ use WebDirectory\appli\core\domain\entities\Entrees;
 
 class   EntreeService implements IEntreeService{
 
-    public function getEntrees(): array
-    {
+    public function getEntrees(): array{
         $entrees = Entrees::all();
         $tab = [];
         foreach ($entrees as $e){
@@ -162,8 +161,15 @@ class   EntreeService implements IEntreeService{
             throw new OrmException("Email non valide");
         }
 
-        if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
-            throw new OrmException("Adresse non valide");
+
+        $ad = $data['adresse'];
+
+        if($data['adresse'] != null || $data['adresse'] != ""){
+            if (!filter_var($data['adresse'], FILTER_SANITIZE_SPECIAL_CHARS)) {
+                throw new OrmException("Adresse non valide");
+            }
+        }else{
+            $ad = "";
         }
 
         //vérification que l'utilisateur n'existe pas déjà
@@ -208,6 +214,7 @@ class   EntreeService implements IEntreeService{
             $entree->tel_mobile = $data['tel_mobile'];
             $entree->tel_fixe = $data['tel_fixe'];
             $entree->email = $data['email'];
+            $entree->publie = 1;
             $entree->image = $fileNameNew;
             $entree->adresse = $data['adresse'];
             $entree->save();

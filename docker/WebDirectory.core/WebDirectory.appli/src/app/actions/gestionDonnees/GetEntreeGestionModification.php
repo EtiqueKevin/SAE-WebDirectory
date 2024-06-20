@@ -61,7 +61,7 @@ class GetEntreeGestionModification extends AbstractAction{
         }
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreeModification.twig', ['departements' => $departements['departements'],'entree'=> $entree['entree'], 'listeDepartement'=> $listeDepartement,'id'=> $id['id'],'csrf'=> $token]);
+        return $view->render($response, 'VueGetEntreeModification.twig', ['departements' => $departements['departements'],'entree'=> $entree['entree'], 'listeDepartement'=> $listeDepartement,'id'=> $id['id'],'csrf'=> $token, 'connecte'=> isset($_SESSION['user'])]);
     }
 
 }

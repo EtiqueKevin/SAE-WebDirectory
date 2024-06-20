@@ -38,8 +38,8 @@ return function( \Slim\App $app): \Slim\App {
         }
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueHome.twig', ['texte' => $texte]);
-    });
+        return $view->render($response, 'VueHome.twig', ['texte' => $texte, 'connecte'=> isset($_SESSION['user'])]);
+    })->setName('home');
 
     $app->get('/entree/create[/]', GetEntreeCreate::class)->setName('getEntreeCreate');
 

@@ -13,6 +13,6 @@ class GetAuth extends AbstractAction{
     public function __invoke(Request $request, Response $response, array $args): Response{
 
         $view =Twig::fromRequest($request);
-        return $view->render($response, 'VueGetAuth.twig', ['csrf'=> CsrfService::generate()]);
+        return $view->render($response, 'VueGetAuth.twig', ['csrf'=> CsrfService::generate(), 'connecte'=> isset($_SESSION['user'])]);
     }
 }

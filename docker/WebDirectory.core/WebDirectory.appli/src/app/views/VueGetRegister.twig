@@ -1,5 +1,21 @@
 {% extends "Index.twig" %}
 
+{% block auth %}
+
+    {% if connecte %}
+
+        <a href="{{url_for('getRegister', {},{})}}"><p>CREATION UTILISATEUR</p></a>
+        <a href="{{url_for('logout', {},{})}}"><p>DECONNEXION</p></a>
+
+    {% else %}
+
+        <a href="{{url_for('getAuth', {},{})}}"><p>CONNEXION</p></a>
+
+    {% endif %}
+
+{% endblock %}
+
+
 {% block content %}
     <div id="card">
         <h1 class="titre">Création d'un utilisateur</h1>

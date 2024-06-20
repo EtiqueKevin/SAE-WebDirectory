@@ -29,7 +29,7 @@ class GetEntreesAffichage extends AbstractAction{
         }
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreesAffichage.twig', ['entrees' => $entrees['entrees']]);
+        return $view->render($response, 'VueGetEntreesAffichage.twig', ['entrees' => $entrees['entrees'], 'connecte'=> isset($_SESSION['user'])]);
     }
 
 }
