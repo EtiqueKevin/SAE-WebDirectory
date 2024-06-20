@@ -69,7 +69,8 @@ export const departementDetailTemplate = `
     </header>
     <article>
       <p>Etage : {{departement.etage}}</p>
-      <p>Description : {{departement.description}}</p>
+      <p>Description :</p>
+      {{{departement.description}}}
     </article>
 </div>
 `;

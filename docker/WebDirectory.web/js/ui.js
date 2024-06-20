@@ -43,7 +43,7 @@ function displayForm(departements) {
 }
 
 function displayDepartement(departement) {
-    departement.departement.description = marked(departement.departement.description);
+    departement.departement.description = marked.parse(departement.departement.description);
 
     const template = Handlebars.compile(templates.departementDetailTemplate);
     document.getElementById("myModal").innerHTML = template(departement);

@@ -14,8 +14,9 @@ async function createCSVFromUsers(users) {
         const numBureau = entryData.entree.num_bureau;
         const telFixe = entryData.entree.tel_fixe;
         const telMobile = entryData.entree.tel_mobile;
+        const adresse = entryData.entree.adresse;
 
-        csvContent += `${nom},${prenom},${email},${numBureau},${telFixe},${telMobile},${departements}\n`;
+        csvContent += `${nom},${prenom},${email},${numBureau},${telFixe},${telMobile},${adresse},${departements}\n`;
     }
 
     return csvContent;
