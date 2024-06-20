@@ -10,7 +10,6 @@ function getAnnuaire(users){
     document.querySelectorAll('.entreeListe').forEach(function(element){
         element.addEventListener('click', async function(){
             let entry = await annuaire.getEntry(element.getAttribute('data-entreeUrl'));
-            console.log(entry);
             ui.displayEntreeDetail(entry);
         });
     });
@@ -51,7 +50,6 @@ function getForm(departements){
 
     document.getElementById('downloadButton').addEventListener('click', function (event){
         event.preventDefault();
-
         let entrees = annuaire.getStoredEntries();
         exporting.downloadCSV(entrees, 'annuaire.csv');
     });
@@ -80,7 +78,6 @@ async function init(){
 
     // Add event listener to close modal
     document.getElementById("myModal").addEventListener('click', function(event) {
-        event.preventDefault();
         if (event.target === this) {
             this.style.display = "none";
             this.innerHTML = '';
