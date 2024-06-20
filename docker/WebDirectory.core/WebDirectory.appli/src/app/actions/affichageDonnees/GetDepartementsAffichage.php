@@ -7,28 +7,30 @@ use Slim\Views\Twig;
 use WebDirectory\appli\app\actions\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use WebDirectory\appli\core\service\DepartementService;
 use WebDirectory\appli\core\service\EntreeService;
+use WebDirectory\appli\core\service\IDepartementService;
 use WebDirectory\appli\core\service\IEntreeService;
 use WebDirectory\appli\core\service\OrmException;
 
-class GetEntreesAffichage extends AbstractAction{
+class GetDepartementsAffichage extends AbstractAction{
 
-    private  IEntreeService $entreeService;
+    private  IDepartementService $entreeService;
 
     public function __construct(){
-        $this->entreeService = new EntreeService();
+        $this->entreeService = new DepartementService();
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response{
 
         try {
-            $entrees = $this->entreeService->getEntrees();
+            $departements = $this->entreeService->getDepartement();
         } catch (OrmException $e) {
             throw new HttpBadRequestException($request, $e->getMessage());
         }
 
         $view = Twig::fromRequest($request);
-        return $view->render($response, 'VueGetEntreesAffichage.twig', ['entrees' => $entrees['entrees'], 'connecte'=> isset($_SESSION['user'])]);
+        return $view->render($response, 'VueGetDepartementsAffichage.twig', ['departements' => $departements['departements'], 'connecte'=> isset($_SESSION['user'])]);
     }
 
 }

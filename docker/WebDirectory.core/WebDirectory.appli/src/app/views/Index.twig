@@ -14,6 +14,7 @@
     <nav id="nav-menu">
         <a href="{{url_for('getEntreesAffichage', {},{})}}"><p>ENTREES</p></a>
         <a href="{{url_for('getEntreesParDepartementAffichage', {},{})}}"><p>ENTREES PAR DEPARTEMENT</p></a>
+        <a href="{{url_for('getDepartementsAffichage', {},{})}}"><p>DEPARTEMENTS</p></a>
         <a href="{{url_for('getEntreeCreate', {},{})}}"><p>CREER UNE ENTREE</p></a>
         <a href="{{url_for('getDepartementCreate', {},{})}}"><p>CREE UN DEPARTEMENT</p></a>
         {% block auth %}
